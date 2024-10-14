@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    /* position: absolute; */
+    width: 100%;
+    /* background-color: orange; */
+    z-index: 100;
+}
+
+
+
+.container{
+    position: relative;
+    height: 100vh;
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.container h1 {
+    margin: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
+form label {
+    display: grid;
+    margin-bottom: 10px;
+}
+
+form button {
+    margin-top: 10px;
+}
