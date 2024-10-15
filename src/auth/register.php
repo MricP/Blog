@@ -56,30 +56,6 @@
         return $verif;
     }
 
-    function createAccount(&$errorMessage) {
-        try {
-            $connexion = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
-            $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            if(!empty(findUser($_POST['pseudo'],$connexion))) {
-                $errorMessage = "Ce pseudo est déjà emprunté.";    
-            } else {
-                // Insérer le nouvel utilisateur
-                $sql = "INSERT INTO utilisateur (pseudo, password, email) VALUES (:pseudo, :password, :email)";
-                $stmt = $connexion->prepare($sql);
-                $stmt->bindParam(':pseudo', $_POST['pseudo']);
-                $stmt->bindParam(':password', $_POST['password']);
-                $stmt->bindParam(':email', $_POST['email']);
-                $stmt->execute();
-                header("Location: ./login.php");
-            }
-        } catch (PDOException $e) { 
-            die('Erreur PDO : ' . $e->getMessage());
-        } catch (Exception $e) {
-            die('Erreur Générale : ' . $e->getMessage());
-        }
-    }
-
     // Vérification des entrées
     if(areInputsCompleted() && areInputsVerified($errorMessage)) {
         //creation du compte de l'utilisateur

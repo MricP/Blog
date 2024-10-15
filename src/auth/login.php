@@ -3,13 +3,11 @@
     require_once('../header.php');   
     require_once('./functions_auth.php');
 
-    if(!empty($_SESSION['currentUser'])){
-        header("Location: ../start.php");
-    }
-
     if(!isset($errorMessage)) {
         $errorMessage = NULL;
     }
+
+    
 
     function connectUser(&$errorMessage) {
         try {
@@ -23,9 +21,9 @@
             } else {
                 if($user['mdp'] == $_POST['password']) {
                     $_SESSION['currentUser'] = $user;
-                    header("Location: ../start.php");
                 } else {
                     $errorMessage = "Mot de passe incorrect.";
+                    echo 'not ok';
                 }
             }
             
@@ -51,9 +49,7 @@
     <div class='container'>
         <h1>Page de connexion</h1>
         <div class="error-message">
-            <?php echo $errorMessage ;
-            $user = $_SESSION['currentUser'];
-            echo $user['pseudo']; ?>
+            <?php echo $errorMessage ?>
         </div>
         <form method='POST'>
             <label for="pseudo">Pseudo*
@@ -64,7 +60,7 @@
             </label>
             <button type="submit" >Se connecter</button>
         </form>
-        <div id="redirection-div">
+        <div id="redirection-dic">
             <p>Vous n'avez pas de compte ? </p>
             <a href="./register.php"> S'inscrire</a>
         </div>

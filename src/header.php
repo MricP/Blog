@@ -4,6 +4,10 @@
     if(!isset($_SESSION['currentUser'])) {
         $_SESSION['currentUser'] = NULL;
     }
+
+    if(!isset($_SESSION['displayPseudo'])) {
+        $_SESSION['displayPseudo']=false;
+    }
 ?>
 
 <!DOCTYPE html>
