@@ -62,6 +62,9 @@
             <label for="password">Mot de passe*
                 <input type="text" name="password" REQUIRED>
             </label>
+            <label for="password">Mot de passe*
+                <input type="text" name="password" REQUIRED>
+            </label>
             <button type="submit" >Se connecter</button>
         </form>    
     </div>
