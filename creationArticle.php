@@ -8,7 +8,7 @@
                     <input class="titreArticle" name="titreArticle" type="text">
                     <input class="choixCategorie" type="text" list="Sports" placeholder="Catégorie" name="choixCategorie">
                     <?php 
-                    if(!empty($_POST['choixCategorie']) && sizeof($_SESSION['categories']) <= 4 && !in_array($_POST['choixCategorie'],$_SESSION['categories'])){
+                    if(!empty($_POST['choixCategorie']) && sizeof($_SESSION['categories']) < 5 && !in_array($_POST['choixCategorie'],$_SESSION['categories'])){
                         array_push($_SESSION['categories'],$_POST['choixCategorie']);
                     }?>
                         <div class="filter-container">
@@ -17,9 +17,14 @@
                                 while($i < sizeof($_SESSION['categories'])){
                             ?>
                             <div class="categorieType">
+                                
                                 <p><?php echo $_SESSION['categories'][$i] ?></p>
                                 <button type="submit" name="sup" value="<?= $_SESSION['categories'][$i];?>" class="filterButton"><img class="deleteCross" src="croix.svg" alt="croix supprimer"></button>
-                                <?php 
+
+                            </div>  
+                            <?php 
+                                $i = $i +1;
+                                }
                                     if(!empty($_POST['sup'])) {
                                         $valeurSup = $_POST['sup'];
                                         $index = array_search($valeurSup, $_SESSION['categories']);
@@ -27,13 +32,11 @@
                                             unset($_SESSION['categories'][$index]);
                                             $_SESSION['categories'] = array_values($_SESSION['categories']);
                                         }
+                                        
                                     } 
-                                    ?>
-                            </div>  
-                            <?php 
-                                $i = $i +1;
-                                }
+                             
                             ?>
+                             
                         </div>
                         
                 </div>
