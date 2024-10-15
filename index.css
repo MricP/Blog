@@ -2,6 +2,38 @@ body{
     background-color: white;
 }
 
+nav{
+    border-bottom: solid 1px #f0f0f0;   
+    font-size: 1.125em;
+}
+
+
+ul{
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    list-style: none;
+    justify-content: space-evenly;
+    gap: 5vw;
+}
+.lienSeConnecter{
+    color: #2929bb;
+
+}
+li:first-child{
+    padding-right: 20vw;
+    font-weight: 900;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    color: #a9a9ff;
+}
+
 label{
     font-size: 1.25em;
 }
@@ -21,6 +53,7 @@ label{
 }
 .titreArticle{
     width: 75%;
+    outline: none;
 }
 .choixCategorie{
     width: 22%;
@@ -53,18 +86,21 @@ datalist{
     height: 70%;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow:  2px 1px 2px 2px #909090;
+    border: solid 2px #f0f0f0;
     margin-left: 15%;
-    margin-top: 5%;
+    margin-top: 3%;
     
 }
 
 .buttonCreationArticle{
-    background-color: blue;
+    background-color: #a9a9ff;
     border-radius: 5px;
     border: none;
     height: 25px;
-    width: 100px;
-    margin-left: 54vw;    
+    width: 200px;
+    margin-left: 0vw;    
     margin-bottom: 2%;
+}
+.buttonCreationArticle:hover{
+    background-color: #909090;
 }
