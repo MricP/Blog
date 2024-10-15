@@ -20,12 +20,18 @@
     --page-switch-color-text:var(--primary);
     --page-switch-color-text-hover:var(--blanc);
     --page-switch-color-background-hover:var(--primary);
+
+    /* Pastilles - Catégorie */
+    --pastille-category-text-color:var(--blanc);
+    --pastille-category-text-color-hover:var(--primary);
+    --pastille-category-background-color:var(--primary);
 }
 
 * {
     margin:0;
     padding: 0;
     font-family: inter, arial, sans-serif;
+    text-decoration: none;
 }
 
 body {
@@ -35,8 +41,8 @@ body {
     flex-direction: column;
 }
 
-h1 {
-    margin: 4rem 0 2rem 0;
+button {
+    border:none;
 }
 
 
@@ -45,6 +51,9 @@ h1 {
     flex-direction: column;
     align-items: center;
     width:80vw;
+}
+
+.article-list-container {
     margin: 2rem 0;
 }
 
@@ -54,9 +63,57 @@ h1 {
     background-color: var(--section-separator-color);
 }
 
+.new-commentaire-submit-button, .new-commentaire-login-button {
+    font-weight:600;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    color: var(--blanc);
+    background-color: var(--primary);
+}
+
+.new-commentaire-submit-button:hover, .new-commentaire-login-button:hover {
+    color: var(--primary);
+    background-color: transparent;
+    border: solid 1px var(--primary)
+}
+
+.form-new-commentaire {
+    width:80vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-commentaire-text {
+    width: 100%;
+    height: 200px;
+    padding: 1rem;
+    margin: 1rem 0;
+    border: solid 2px var(--gris);
+    border-radius: 10px;
+}
+
 /* Page d'un article'*/
 
+.article-container {
+    margin: 4rem 0 0rem 0;
+}
+
+.article-container > h1 {
+    margin: 0 0 1.5rem 0;
+}
+
+.article-paragraphes-container {
+    margin: 1rem 0;
+}
+
+.commentaires-container {
+    margin: 4rem 0;
+}
+
 .article-paragraphe {
+    text-align: justify;
     margin: 1.5rem 0;
 }
 
@@ -75,12 +132,44 @@ h1 {
 }
 
 .article-paragraphe:hover, .commentaire-text:hover {
-    font-size: 1.2rem;
+    font-size: 1.08rem;
+}
+
+.article-creator {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 2rem 0;
 }
 
 .commentaire-creator {
     font-weight: 600;
     text-align: end;
+}
+
+.new-commentaire-label {
+    margin: 1rem 0;
+}
+
+.pastilles-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.pastille-category {
+    width:fit-content;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    margin: 0 1rem 0 0;
+    border-radius: 50px;
+    color: var(--pastille-category-text-color);
+    background-color: var(--pastille-category-background-color);
+    transition: 0.4s all ease-in-out;
+}
+
+.pastille-category:hover {
+    color: var(--primary);
+    background-color: transparent;
+    border: solid 1px var(--pastille-category-text-color-hover);
 }
 
 /* Page de liste d'articles*/
@@ -120,14 +209,15 @@ h1 {
 
 .page-switch-text {
     font-weight: 700;
-    padding: 1rem;
+    padding: 1rem 3rem;
     color: var(--page-switch-color-text);
+    transition: 0.4s all ease-in-out;
 }
 
 .page-switch-text:hover {
     color: var(--page-switch-color-text-hover);
     background-color: var(--page-switch-color-background-hover);
-    border-radius: 10px;
+    border-radius: 50px;
 }
 
 .page-circle-buttons-container {
@@ -148,6 +238,7 @@ h1 {
     font-size: 1.3rem;
     color: var(--page-button-circle-color-text);
     background-color: var(--page-button-circle-color-background);
+    transition: 0.4s all ease-in-out;
 }
 
 .page-circle-button:hover {
