@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if(!isset($_SESSION['categories'])){
+        $_SESSION['categories'] = [];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="fr">

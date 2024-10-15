@@ -28,6 +28,7 @@ li:first-child{
 a{
     text-decoration: none;
     color: black;
+    text-align: center;
 }
 
 a:hover{
@@ -58,8 +59,42 @@ label{
 .choixCategorie{
     width: 22%;
 }
+
+.filter-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 5px;
+    margin-top: 5px;
+}
 datalist{
     background-color: black;
+}
+
+.categorieType{
+    display: flex;
+    flex-direction: row;
+    background-color: #a9a9ff;
+    width: max-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    height: 30px;
+    padding-left: 5px;
+}
+
+.categorieType > button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.deleteCross{
+    width: 20px;
+    padding: 0;
+}
+
+.deleteCross > p{
+    margin: 0;
 }
 
 .formContent-container{
@@ -103,4 +138,9 @@ datalist{
 }
 .buttonCreationArticle:hover{
     background-color: #909090;
+}
+.filterButton{
+    border: none;
+    background-color: transparent;
+    border-radius: 50px;
 }
