@@ -40,4 +40,10 @@ form label {
 
 form button {
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#redirection-div {
+    display: flex;
+    gap: 5px;
 }
