@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 15 oct. 2024 à 11:44
+-- Généré le : mer. 16 oct. 2024 à 19:55
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -52,7 +52,7 @@ CREATE TABLE `article_categories` (
 --
 
 CREATE TABLE `category` (
-  `id_catagory` int(4) NOT NULL,
+  `id_category` int(4) NOT NULL,
   `name_category` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -105,7 +105,7 @@ ALTER TABLE `article_categories`
 -- Index pour la table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id_catagory`);
+  ADD PRIMARY KEY (`id_category`);
 
 --
 -- Index pour la table `comment`
@@ -119,7 +119,9 @@ ALTER TABLE `comment`
 -- Index pour la table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id_user`);
+  ADD PRIMARY KEY (`id_user`),
+  ADD UNIQUE KEY `pseudo` (`pseudo`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -135,7 +137,7 @@ ALTER TABLE `article`
 -- AUTO_INCREMENT pour la table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id_catagory` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_category` int(4) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `comment`
@@ -147,7 +149,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Contraintes pour les tables déchargées
@@ -164,7 +166,7 @@ ALTER TABLE `article`
 --
 ALTER TABLE `article_categories`
   ADD CONSTRAINT `fk_article_categories_article` FOREIGN KEY (`id_article`) REFERENCES `article` (`id_article`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_article_categories_category` FOREIGN KEY (`id_category`) REFERENCES `category` (`id_catagory`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_article_categories_category` FOREIGN KEY (`id_category`) REFERENCES `category` (`id_category`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `comment`

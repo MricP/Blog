@@ -1,9 +1,13 @@
 <?php
-    require_once('header.php');   
-    require_once('auth-functions.php');
+    require_once('../includes/header.php');   
+    require_once('./auth-functions.php');
 
     if(!empty($_SESSION['currentUser'])){
         header("Location: ../start.php");
+    }
+
+    if(!isset($_SESSION['displayPseudo'])) {
+        $_SESSION['displayPseudo']=false;
     }
 
     if(!isset($errorMessage)) {
@@ -79,5 +83,5 @@
         });
     </script>
 <?php
-    require_once('footer.php');
+    require_once('../includes/footer.php');
 ?>
