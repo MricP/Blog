@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Sport News</title>
-        <link rel="stylesheet" href="./app.css">
-        <?php 
+<?php
+    require_once('../includes/header.php');
 
-        $article = [
-            'title' => "Haaland débarque à Lyon",
-            'creator' => "Kilian Mbappé"
-        ];
+    $article = [
+        'title' => "Haaland débarque à Lyon",
+        'creator' => "Kilian Mbappé"
+    ];
 
-        $commentaire = [
-            'text' => "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis illo exercitationem, impedit, nobis qui odit assumenda dolores rerum quae recusandae nisi molestiae unde excepturi natus commodi sequi consequuntur soluta. Molestiae?",
-            'creator' => "The Footix"
-        ];
-        ?>
-    </head>
-    <body>
+    $commentaire = [
+        'text' => "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis illo exercitationem, impedit, nobis qui odit assumenda dolores rerum quae recusandae nisi molestiae unde excepturi natus commodi sequi consequuntur soluta. Molestiae?",
+        'creator' => "The Footix"
+    ];
+?>
+    <main>
         <div class="article-container">
             <h1><?php echo $article['title']; ?></h1>
             <div class="article-paragraphes-container">
@@ -45,5 +40,7 @@
             <div class="page-circle-buttons-container">
             <span class="page-switch-text">Suivant</span>
         </div>
-    </body>
-</html>
+    </main>
+<?php
+    require_once('../includes/footer.php');
+?>
