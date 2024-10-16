@@ -67,10 +67,12 @@
             if(isPseudoCompleted()){
                 //L'insertion s'est bien passé, on redirige
                 if(insertUserToDB($errorMessage,$connexion)) {
+                    echo "ok";
                     //$_SESSION['currentUser'] =;
                     unset($_SESSION['email']);
                     unset($_SESSION['password']);
                     unset($_SESSION['pseudo']);
+                    unset($_SESSION['displayPseudo']);
                     //header("Location: ../start.php");
                     
                 }
@@ -82,6 +84,7 @@
                 unset($_SESSION['email']);
                 unset($_SESSION['password']);
                 unset($_SESSION['pseudo']);
+                unset($_SESSION['displayPseudo']);
                 //header("Location: ../start.php");
             } else {
                 $errorMessage = "Mot de passe incorrect.";

@@ -1,10 +1,10 @@
 <?php
-    require_once('../header.php');   
-    require_once('./auth-functions.php');
+    require_once('header.php');   
+    require_once('auth-functions.php');
 
-    // if(!empty($_SESSION['currentUser'])){
-    //     header("Location: ../start.php");
-    // }
+    if(!empty($_SESSION['currentUser'])){
+        header("Location: ../start.php");
+    }
 
     if(!isset($errorMessage)) {
         $errorMessage = NULL;
@@ -63,6 +63,21 @@
             <button type="submit" >Se connecter</button>
         </form>
     </div>
+    <script>
+        /* Cet EventListener sert à supprimer les $_SESSION si la page est quitté lors de la connexion
+                - Changement de l'URL
+                - Fermeture de la page
+        */
+        window.addEventListener("beforeunload", function(event) {
+            // Utilise fetch pour envoyer une requête au serveur
+            navigator.sendBeacon(<?php
+                unset($_SESSION['email']);
+                unset($_SESSION['password']);
+                unset($_SESSION['pseudo']);
+                unset($_SESSION['displayPseudo']);
+            ?>);
+        });
+    </script>
 <?php
-    require_once('../footer.php');
+    require_once('footer.php');
 ?>
