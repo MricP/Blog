@@ -39,12 +39,12 @@
     }
 ?>
     <?php
-        echo isset($_SESSION['email']) ? $_SESSION['email']."\n" : "NULL"."\n";
-        echo isset($_SESSION['password']) ? $_SESSION['password']."\n" : "NULL"."\n";
-        echo isset($_SESSION['pseudo']) ? $_SESSION['pseudo']."\n" : "NULL"."\n";
+        // echo isset($_SESSION['email']) ? $_SESSION['email']."\n" : "NULL"."\n";
+        // echo isset($_SESSION['password']) ? $_SESSION['password']."\n" : "NULL"."\n";
+        // echo isset($_SESSION['pseudo']) ? $_SESSION['pseudo']."\n" : "NULL"."\n";
     ?>
 
-    <div class='container'>
+    <main>
         <h1>Page de connexion</h1>
         <div class="error-message">
             <?php echo $errorMessage ?>
@@ -66,7 +66,7 @@
             ?>
             <button type="submit" >Se connecter</button>
         </form>
-    </div>
+            </main>
     <script>
         /* Cet EventListener sert à supprimer les $_SESSION si la page est quitté lors de la connexion
                 - Changement de l'URL
