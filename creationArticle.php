@@ -1,7 +1,13 @@
-    <?php require("header.php"); ?>
+    <?php 
+        require("header.php");
+        require("function.php");
+
+        $categories = selectAllCategories();
+    ?>
     <div class="creationPage-container">
         <form class="creationArticleForm" method="POST">
             <h1>Créez votre Article</h1>
+            <button type="submit" style="display: none;"></button>
             <div class="formInput-container">
                 <label for="titreArticle">Titre de l'article</label>
                 <div>
@@ -17,10 +23,8 @@
                                 while($i < sizeof($_SESSION['categories'])){
                             ?>
                             <div class="categorieType">
-                                
-                                <p><?php echo $_SESSION['categories'][$i] ?></p>
+                                <p><?php echo $_SESSION['categories'][$i]['category_name'] ?></p>
                                 <button type="submit" name="sup" value="<?= $_SESSION['categories'][$i];?>" class="filterButton"><img class="deleteCross" src="croix.svg" alt="croix supprimer"></button>
-
                             </div>  
                             <?php 
                                 $i = $i +1;
@@ -33,23 +37,16 @@
                                         } 
                                     } 
                             ?>
-                             
-                        </div>
-                        
+                        </div>       
                 </div>
                 <datalist id="Sports">
                     <option value=" "></option>
-                    <option value="Football"></option>
-                    <option value="Tennis"></option>
-                    <option value="Rugby"></option>
-                    <option value="Hockey"></option>
-                    <option value="Golf"></option>
-                    <option value="F1"></option>
-                    <option value="Natation"></option>
-                    <option value="Handball"></option>
-                    <option value="Athlétisme"></option>
-                    <option value="Football Américain"></option>
-                    <option value="Basketball"></option>
+                    <?php 
+                        for ($i = 0; $i < sizeof($categories); $i++) {
+                            echo '<option value="'.$i.'">'.$categories[$i]['name_category'].' <option/>';
+                        }
+                    ?>
+
                 </datalist>
             </div>
             <div class="formContent-container">
@@ -66,7 +63,7 @@
         </form>
        
     </div>
-    <?php   ?>
+    <?php    ?>
     
 </body>
 </html>
