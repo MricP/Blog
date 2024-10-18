@@ -1,247 +1,299 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 :root {
-    --blanc: #fff;
-    --gris: #360808da;
-    --primary: rgb(71, 9, 214);
+  --blanc: #fff;
+  --gris: #360808da;
+  --primary: rgb(71, 9, 214);
+
+  --section-separator-color: var(--gris);
 
 
-
-    --section-separator-color:var(--gris);
-
-    /* 
+  /* Options de la barre de navigation */
+  --navbar-option-text-color-hover : var(--blanc);
+  --navbar-option-background-color-hover : var(--primary);
+  /* 
     Boutons cercles pour changer de page 
     dans la liste des articles 
     */
-    --page-button-circle-color-text:var(--primary);
-    --page-button-circle-color-text-hover:var(--blanc);
-    --page-button-circle-color-background-hover:var(--primary);
+  --page-button-circle-color-text: var(--primary);
+  --page-button-circle-color-text-hover: var(--blanc);
+  --page-button-circle-color-background-hover: var(--primary);
 
-    --page-switch-color-text:var(--primary);
-    --page-switch-color-text-hover:var(--blanc);
-    --page-switch-color-background-hover:var(--primary);
+  --page-switch-color-text: var(--primary);
+  --page-switch-color-text-hover: var(--blanc);
+  --page-switch-color-background-hover: var(--primary);
 
-    /* Pastilles - Catégorie */
-    --pastille-category-text-color:var(--blanc);
-    --pastille-category-text-color-hover:var(--primary);
-    --pastille-category-background-color:var(--primary);
+  /* Pastilles - Catégorie */
+  --pastille-category-text-color: var(--blanc);
+  --pastille-category-text-color-hover: var(--primary);
+  --pastille-category-background-color: var(--primary);
+
+  /* */
+  --new-commentaire-submit-button-text-color:var(--primary);;
+  --new-commentaire-submit-button-text-color-hover
+  --new-commentaire-submit-button-text-color
 }
 
 * {
-    margin:0;
-    padding: 0;
-    font-family: inter, arial, sans-serif;
-    text-decoration: none;
+  margin: 0;
+  padding: 0;
+  font-family: inter, arial, sans-serif;
+  text-decoration: none;
 }
 
 body {
-    display : flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 button {
-    border:none;
+  border: none;
 }
 
+a {
+  color: #000;
+}
 
-.article-list-container, .article-paragraphes-container, .commentaires-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width:80vw;
+/* NAVBAR */
+
+.navbar-container {
+  width: 80vw;
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 0 2rem 0;
+}
+
+.navbar-option {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius:10px;
+  transition: 0.4s all ease-in-out;
+}
+
+.navbar-option:hover {
+  color: var(--navbar-option-text-color-hover);
+  background-color: var(--navbar-option-background-color-hover);
+}
+
+/* CONTAINERS */
+
+.article-list-container,
+.article-paragraphes-container,
+.commentaires-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
 }
 
 .article-list-container {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 
 .section-separator {
-    width: 80vw;
-    height: 1px;
-    background-color: var(--section-separator-color);
+  width: 80vw;
+  height: 1px;
+  background-color: var(--section-separator-color);
 }
 
-.new-commentaire-submit-button, .new-commentaire-login-button {
-    font-weight:600;
-    font-size: 1.2rem;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    color: var(--blanc);
-    background-color: var(--primary);
+.pastilles-container {
+  display: flex;
+  flex-direction: row;
 }
 
-.new-commentaire-submit-button:hover, .new-commentaire-login-button:hover {
-    color: var(--primary);
-    background-color: transparent;
-    border: solid 1px var(--primary)
+.pastille-category {
+  width: fit-content;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  margin: 0 1rem 0 0;
+  border-radius: 50px;
+  border: solid 1px var(--blanc);
+  color: var(--pastille-category-text-color);
+  background-color: var(--pastille-category-background-color);
+  transition: 0.4s all ease-in-out;
+  cursor:pointer;
 }
 
-.form-new-commentaire {
-    width:80vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.new-commentaire-text {
-    width: 100%;
-    height: 200px;
-    padding: 1rem;
-    margin: 1rem 0;
-    border: solid 2px var(--gris);
-    border-radius: 10px;
+.pastille-category:hover {
+  color: var(--primary);
+  background-color: transparent;
+  border: solid 1px var(--pastille-category-text-color-hover);
 }
 
 /* Page d'un article'*/
 
 .article-container {
-    margin: 4rem 0 0rem 0;
+  margin: 4rem 0 0rem 0;
 }
 
 .article-container > h1 {
-    margin: 0 0 1.5rem 0;
+  margin: 0 0 1.5rem 0;
 }
 
 .article-paragraphes-container {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 .commentaires-container {
-    margin: 4rem 0;
+  margin: 4rem 0;
 }
 
 .article-paragraphe {
-    text-align: justify;
-    margin: 1.5rem 0;
+  text-align: justify;
+  margin: 1.5rem 0;
 }
 
 .commentaire-box {
-    width: 69%;
-    margin-bottom: 2rem;
-    padding: 2rem 0;
+  width: 69%;
+  margin-bottom: 2rem;
+  padding: 2rem 0;
 }
 
 .commentaire-text {
-    margin: 1rem 0; 
+  margin: 1rem 0;
 }
 
-.article-paragraphe, .commentaire-text {
-    transition: 0.4s all ease-in-out;
+.article-paragraphe,
+.commentaire-text {
+  transition: 0.4s all ease-in-out;
 }
 
-.article-paragraphe:hover, .commentaire-text:hover {
-    font-size: 1.08rem;
+.article-paragraphe:hover,
+.commentaire-text:hover {
+  font-size: 1.08rem;
 }
 
 .article-creator {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin: 2rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 2rem 0;
 }
 
 .commentaire-creator {
-    font-weight: 600;
-    text-align: end;
+  font-weight: 600;
+  text-align: end;
+}
+
+.form-new-commentaire {
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .new-commentaire-label {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
-.pastilles-container {
-    display: flex;
-    flex-direction: row;
+.new-commentaire-text {
+  width: 100%;
+  height: 50px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 1.2rem;
+  border: solid 2px var(--gris);
+  border-radius: 10px;
+  resize: none;
+  transition: 0.4s all ease-in-out;
 }
 
-.pastille-category {
-    width:fit-content;
-    font-weight: 600;
-    padding: 1rem 2rem;
-    margin: 0 1rem 0 0;
-    border-radius: 50px;
-    color: var(--pastille-category-text-color);
-    background-color: var(--pastille-category-background-color);
-    transition: 0.4s all ease-in-out;
+.new-commentaire-text:hover {
+  height: 200px;
 }
 
-.pastille-category:hover {
-    color: var(--primary);
-    background-color: transparent;
-    border: solid 1px var(--pastille-category-text-color-hover);
+.new-commentaire-submit-button,
+.new-commentaire-login-button {
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: solid 1px var(--blanc);
+  color: var(--blanc);
+  background-color: var(--primary);
+  transition: 0.4s all ease-in-out;
+}
+
+.new-commentaire-submit-button:hover,
+.new-commentaire-login-button:hover {
+  border: solid 1px var(--primary);
+  color: var(--primary);
+  background-color: transparent;
 }
 
 /* Page de liste d'articles*/
 
 .article-box {
-    margin-bottom: 2rem;
-    padding: 2rem 0;
+  margin-bottom: 2rem;
+  padding: 2rem 0;
 }
 
 .article-box:hover {
-    border: solid #000000 1px;
-    border-left: none;
-    border-right: none;
+  border: solid #000000 1px;
+  border-left: none;
+  border-right: none;
 }
 
 .article-box > .article-box-description {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
-.article-box-date, .article-box-creator {
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-align: end;
+.article-box-date,
+.article-box-creator {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: end;
 }
 
 .page-switch-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin: 2rem 0;
 }
 
 .page-switch-container > * {
-    margin: 0 2rem;
+  margin: 0 2rem;
 }
 
 .page-switch-text {
-    font-weight: 700;
-    padding: 1rem 3rem;
-    color: var(--page-switch-color-text);
-    transition: 0.4s all ease-in-out;
+  font-weight: 700;
+  padding: 1rem 3rem;
+  color: var(--page-switch-color-text);
+  transition: 0.4s all ease-in-out;
 }
 
 .page-switch-text:hover {
-    color: var(--page-switch-color-text-hover);
-    background-color: var(--page-switch-color-background-hover);
-    border-radius: 50px;
+  color: var(--page-switch-color-text-hover);
+  background-color: var(--page-switch-color-background-hover);
+  border-radius: 50px;
 }
 
 .page-circle-buttons-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
 
 .page-circle-button {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 1rem;
-    border-radius: 100%;
-    font-size: 1.3rem;
-    color: var(--page-button-circle-color-text);
-    background-color: var(--page-button-circle-color-background);
-    transition: 0.4s all ease-in-out;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+  border-radius: 100%;
+  font-size: 1.3rem;
+  color: var(--page-button-circle-color-text);
+  background-color: var(--page-button-circle-color-background);
+  transition: 0.4s all ease-in-out;
 }
 
 .page-circle-button:hover {
-    color: var(--page-button-circle-color-text-hover);
-    background-color: var(--page-button-circle-color-background-hover);
+  color: var(--page-button-circle-color-text-hover);
+  background-color: var(--page-button-circle-color-background-hover);
 }
