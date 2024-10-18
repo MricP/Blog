@@ -60,7 +60,7 @@
             <div class="article-paragraphes-container">
                 <?php 
                     for ($i = 0; $i < sizeof($paragraphes); $i++) {
-                        echo '<p class="article-paragraphe">'.$paragraphes[strval($i)]["texte"].'</p>';
+                        echo '<p class="article-paragraphe">'.$paragraphes[strval($i)]["text"].'</p>';
                     }
                 ?>
             </div>

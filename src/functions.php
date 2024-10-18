@@ -1,17 +1,17 @@
 <?php
 
 $db = [
-    "host" => "localhost",
-    "name" => "tpblog",
-    "username" =>"root",
-    "password" => "",
+    "host" => "iutdoua-web.univ-lyon1.fr",
+    "name" => "p2310243",
+    "username" =>"p2310243",
+    "password" => "727423",
     "tables" => [
-        "users",
-        "articles",
-        "categories",
-        "articles_categories",
+        "user",
+        "article",
+        "category",
+        "article_categories",
         "paragraphs",
-        "comments"
+        "comment"
     ],
 
 ];
@@ -23,7 +23,7 @@ function selectUser($idUser) {
         $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][0]." WHERE id=:idUser";
+        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][0]." WHERE id_user=:idUser";
         $stmt = $connexion->prepare($sql);
         $stmt->bindParam(':idUser', $idUser);
         $stmt->execute();
@@ -63,7 +63,7 @@ function selectArticle($idarticle) {
         $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][1]." WHERE id=:idarticle";
+        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][1]." WHERE id_article=:idarticle";
         $stmt = $connexion->prepare($sql);
         $stmt->bindParam(':idarticle', $idarticle);
         $stmt->execute();
@@ -103,7 +103,7 @@ function selectCategories($idarticle) {
         $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][2]." AS c JOIN ".$GLOBALS['db']['tables'][3]." AS ac ON c.id=ac.id_categorie WHERE id_article=:idarticle";
+        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][2]." AS c JOIN ".$GLOBALS['db']['tables'][3]." AS ac ON c.id_category=ac.id_category WHERE id_article=:idarticle";
         $stmt = $connexion->prepare($sql);
         $stmt->bindParam(':idarticle', $idarticle);
         $stmt->execute();
