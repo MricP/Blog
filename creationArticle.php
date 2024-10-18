@@ -30,11 +30,8 @@
                                         $index = array_search($valeurSup, $_SESSION['categories']);
                                         if ($index !== false) {
                                             unset($_SESSION['categories'][$index]);
-                                            $_SESSION['categories'] = array_values($_SESSION['categories']);
-                                        }
-                                        
+                                        } 
                                     } 
-                             
                             ?>
                              
                         </div>
@@ -69,7 +66,7 @@
         </form>
        
     </div>
-    <?php  ?>
+    <?php   ?>
     
 </body>
 </html>
