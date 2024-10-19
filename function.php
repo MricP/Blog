@@ -42,7 +42,7 @@ function selectLastArticle() {
         $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][1]." ORDER BY id_article ASC LIMIT 1";
+        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][1]." ORDER BY id_article DESC LIMIT 1";
         $stmt = $connexion->prepare($sql);
         $stmt->execute();
         $article = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -56,26 +56,28 @@ function selectLastArticle() {
 }
 
 
-function createArticle($id_last_article) {
+function createArticle() {
     try {
         $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         if (!(isset($_SESSION['currentUser']))) {
-            if(!empty($_SESSION['titreArticle']) && !empty($_SESSION['contentArticle']) && !empty($_SESSION['currentUser']) && !empty($_SESSION['categories'])){
+            if(!empty($_SESSION['article-title']) && !empty($_SESSION['article-content']) && !empty($_SESSION['currentUser']) && !empty($_SESSION['categories'])){
                 $sql = "INSERT INTO ".$GLOBALS['db']['tables'][1]."(title, description, id_author) VALUES (:title, :description, :id_author)";
                 $stmt = $connexion->prepare($sql);
-                $stmt->bindParam(':title', $_SESSION['titreArticle']);
-                $stmt->bindParam(':description', $_SESSION['contentArticle']);
+                $stmt->bindParam(':title', $_SESSION['article-title']);
+                $stmt->bindParam(':description', $_SESSION['article-content']);
                 $stmt->bindParam(':id_author', $_SESSION['currentUser']);
                 $stmt->execute();
 
-                $id_last_article = selectLastArticle();
+                $lastArticle = selectLastArticle();
+                $id_last_article = $lastArticle['id_article'];
+
                 for ($i=0; $i < sizeof($_SESSION['categories']); $i++){
                     $sql = "INSERT INTO ".$GLOBALS['db']['tables'][3]."(id_article, id_category) VALUES (:id_article, :id_category)";
                     $stmt = $connexion->prepare($sql);
                     $stmt->bindParam(':id_article', $id_last_article);
-                    $stmt->bindParam(':description', $_SESSION['categories'][$i]);
+                    $stmt->bindParam(':id_category', $_SESSION['categories'][$i]);
                     $stmt->execute();
                 }
             }

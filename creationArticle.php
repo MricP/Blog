@@ -1,9 +1,7 @@
     <?php 
         require("header.php");
         require("function.php");
-
         $categories = selectAllCategories();
-  
     ?>
 
     <datalist id='categories-list'>
@@ -61,6 +59,7 @@
                 if(!empty($_POST['article-title']) && !empty($_SESSION['categories']) && !empty($_POST['article-content'])){
                     $_SESSION['article-title'] = $_POST['article-title'];
                     $_SESSION['article-content'] = $_POST['article-content'];
+                    createArticle();
                 }
             ?> <button type="submit" class="creationArticle-button">Valider</button>
         </form>
