@@ -38,7 +38,8 @@ a:hover{
 label{
     font-size: 1.25em;
 }
-.creationArticleForm{
+
+.creationArticle-form{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,11 +53,11 @@ label{
     padding-bottom: 2%;
     outline: none;
 }
-.titreArticle{
+.article-title{
     width: 75%;
     outline: none;
 }
-.choixCategorie{
+.selected-category{
     width: 22%;
 }
 
@@ -71,7 +72,7 @@ datalist{
     background-color: black;
 }
 
-.categorieType{
+.selected-categories{
     display: flex;
     flex-direction: row;
     background-color: #a9a9ff;
@@ -83,7 +84,7 @@ datalist{
     padding-left: 5px;
 }
 
-.categorieType > button{
+.selected-categories > button{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -109,7 +110,7 @@ datalist{
 
 
 
-.contentArticle{
+.article-content{
     height: auto;
     flex-grow: 1;
     outline: none;
@@ -127,7 +128,7 @@ datalist{
     
 }
 
-.buttonCreationArticle{
+.creationArticle-button{
     background-color: #a9a9ff;
     border-radius: 5px;
     border: none;
@@ -136,7 +137,7 @@ datalist{
     margin-left: 0vw;    
     margin-bottom: 2%;
 }
-.buttonCreationArticle:hover{
+.creationArticle-button:hover{
     background-color: #909090;
 }
 .filterButton{

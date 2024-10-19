@@ -1,27 +1,29 @@
 <?php
 
 $db = [
-    "host" => "iutdoua-web.univ-lyon1.fr",
-    "name" => "p2300496",
-    "username" =>"p2300496",
-    "password" => "718858",
+    //"host" => "iutdoua-web.univ-lyon1.fr",
+    "host" => "localhost",
+    "name" => "blog",
+    //"username" =>"p2300496",
+    //"password" => "718858",
     "tables" => [
-        "users",
-        "articles",
+        "user",
+        "article",
         "category",
-        "articles_categories",
-        "paragraphs",
-        "comments"
+        "article_categories",
+        //"paragraphs",
+        "comment"
     ],
 
 ];
 
 function selectAllCategories() {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
+        //$connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
+        $connexion = new PDO('mysql:host='.$GLOBALS['db']['host'].';dbname='.$GLOBALS['db']['name'], 'root', '');
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][2];
+        $sql = "SELECT * FROM category";
         $stmt = $connexion->prepare($sql);
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);

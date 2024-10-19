@@ -3,67 +3,68 @@
         require("function.php");
 
         $categories = selectAllCategories();
+  
     ?>
+
+    <datalist id='categories-list'>
+        <?php
+            foreach($categories as $category) {
+                echo "<option value='{$category['name_category']}'></option>";
+            }
+        ?>
+    </datalist>
+
     <div class="creationPage-container">
-        <form class="creationArticleForm" method="POST">
+        <form class="creationArticle-form" method="POST">
+            <button type="submit" style="display: none"></button>
             <h1>Créez votre Article</h1>
-            <button type="submit" style="display: none;"></button>
             <div class="formInput-container">
-                <label for="titreArticle">Titre de l'article</label>
+                <label for="articleTitle">Titre de l'article</label>
                 <div>
-                    <input class="titreArticle" name="titreArticle" type="text">
-                    <input class="choixCategorie" type="text" list="Sports" placeholder="Catégorie" name="choixCategorie">
+                    <input class="article-title" name="articleTitle" type="text">
+                    <input class="selected-category" type="text" list="categories-list" placeholder="Catégorie" name="selectedCategory">
                     <?php 
-                    if(!empty($_POST['choixCategorie']) && sizeof($_SESSION['categories']) < 5 && !in_array($_POST['choixCategorie'],$_SESSION['categories'])){
-                        array_push($_SESSION['categories'],$_POST['choixCategorie']);
-                    }?>
-                        <div class="filter-container">
-                            <?php 
-                                $i = 0;
-                                while($i < sizeof($_SESSION['categories'])){
-                            ?>
-                            <div class="categorieType">
-                                <p><?php echo $_SESSION['categories'][$i]['category_name'] ?></p>
-                                <button type="submit" name="sup" value="<?= $_SESSION['categories'][$i];?>" class="filterButton"><img class="deleteCross" src="croix.svg" alt="croix supprimer"></button>
-                            </div>  
-                            <?php 
-                                $i = $i +1;
-                                }
-                                    if(!empty($_POST['sup'])) {
-                                        $valeurSup = $_POST['sup'];
-                                        $index = array_search($valeurSup, $_SESSION['categories']);
-                                        if ($index !== false) {
-                                            unset($_SESSION['categories'][$index]);
-                                        } 
-                                    } 
-                            ?>
-                        </div>       
-                </div>
-                <datalist id="Sports">
-                    <option value=" "></option>
-                    <?php 
-                        for ($i = 0; $i < sizeof($categories); $i++) {
-                            echo '<option value="'.$i.'">'.$categories[$i]['name_category'].' <option/>';
+                        if(!empty($_POST['deleteCategory'])) {
+                            $valeurSup = $_POST['deleteCategory'];
+                            $index = array_search($valeurSup, $_SESSION['categories']);
+                            if ($index !== false) {
+                                unset($_SESSION['categories'][$index]);
+                                $_SESSION['categories'] = array_values($_SESSION['categories']);
+                            }
+                        }
+
+                        if(!empty($_POST['selectedCategory']) && sizeof($_SESSION['categories']) < 5 && !in_array($_POST['selectedCategory'],$_SESSION['categories'])){
+                            array_push($_SESSION['categories'],$_POST['selectedCategory']);
                         }
                     ?>
-
-                </datalist>
+                    <div class="filter-container">
+                        <?php 
+                            $i = 0;
+                            while($i < sizeof($_SESSION['categories'])){
+                                echo "<div class='selected-categories'>";
+                                echo    "<p>{$_SESSION['categories'][$i]}</p>";
+                                echo    "<button type='submit' name='deleteCategory' value='{$_SESSION['categories'][$i]}' class='filterButton'>";
+                                echo        "<img class='deleteCross' src='croix.svg' alt='croix supprimer'>";
+                                echo    "</button>";
+                                echo "</div>";  
+                                $i = $i+1;
+                            }
+                        ?>
+                    </div>
+                </div>
             </div>
             <div class="formContent-container">
-                <label for="contentArticle">Contenu de l'article</label>
-                <textarea class="contentArticle" name="contentArticle" type="text"></textarea>
+                <label for="article-content">Contenu de l'article</label>
+                <textarea class="article-content" name="article-content" type="text"></textarea>
             </div> 
             <?php 
-
-                if(!empty($_POST['titreArticle']) && !empty($_SESSION['categories']) && !empty($_POST['contentArticle'])){
-                    $_SESSION['titreArticle'] = $_POST['titreArticle'];
-                    $_SESSION['contentArticle'] = $_POST['contentArticle'];
+                if(!empty($_POST['article-title']) && !empty($_SESSION['categories']) && !empty($_POST['article-content'])){
+                    $_SESSION['article-title'] = $_POST['article-title'];
+                    $_SESSION['article-content'] = $_POST['article-content'];
                 }
-            ?> <button type="submit" class="buttonCreationArticle">Valider</button>
+            ?> <button type="submit" class="creationArticle-button">Valider</button>
         </form>
-       
     </div>
-    <?php    ?>
-    
+    <?php?>    
 </body>
 </html>
