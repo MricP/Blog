@@ -3,6 +3,8 @@
     if(!isset($_SESSION['categories'])){
         $_SESSION['categories'] = [];
     }
+    $_SESSION['article-title'] = "";
+    $_SESSION['article-content'] = "";
 ?>
 <!DOCTYPE html>
 <html lang="fr">

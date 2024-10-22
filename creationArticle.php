@@ -1,7 +1,7 @@
     <?php 
         require("header.php");
         require("function.php");
-        $categories = selectAllCategories();
+        $categories = selectAllCategories();        
     ?>
 
     <datalist id='categories-list'>
@@ -19,7 +19,7 @@
             <div class="formInput-container">
                 <label for="articleTitle">Titre de l'article</label>
                 <div>
-                    <input class="article-title" name="articleTitle" type="text">
+                    <input class="article-title" name="article-title" type="text">
                     <input class="selected-category" type="text" list="categories-list" placeholder="Catégorie" name="selectedCategory">
                     <?php 
                         if(!empty($_POST['deleteCategory'])) {
@@ -57,13 +57,16 @@
             </div> 
             <?php 
                 if(!empty($_POST['article-title']) && !empty($_SESSION['categories']) && !empty($_POST['article-content'])){
+                    $_SESSION['currentUser'] = 8;                 
                     $_SESSION['article-title'] = $_POST['article-title'];
                     $_SESSION['article-content'] = $_POST['article-content'];
                     createArticle();
+                    header("Location: header.php");
+                    session_destroy();
                 }
             ?> <button type="submit" class="creationArticle-button">Valider</button>
         </form>
     </div>
-    <?php?>    
+    <?php  ?>    
 </body>
 </html>
