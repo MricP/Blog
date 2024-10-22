@@ -10,18 +10,22 @@ $db = [
         "article",
         "category",
         "article_categories",
-        "paragraphs",
         "comment"
     ],
 
 ];
 
+function getConnection() {
+    $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
+    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $connexion;
+}
+
 /* USERS */
 
 function selectUser($idUser) {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
         $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][0]." WHERE id_user=:idUser";
         $stmt = $connexion->prepare($sql);
@@ -41,8 +45,7 @@ function selectUser($idUser) {
 
 function selectArticles($maxNbArticles) {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
         $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][1]." LIMIT :maxNbArticles";
         $stmt = $connexion->prepare($sql);
@@ -60,8 +63,7 @@ function selectArticles($maxNbArticles) {
 
 function selectArticle($idarticle) {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
         $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][1]." WHERE id_article=:idarticle";
         $stmt = $connexion->prepare($sql);
@@ -81,8 +83,7 @@ function selectArticle($idarticle) {
 
 function selectAllCategories() {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
         $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][2];
         $stmt = $connexion->prepare($sql);
@@ -100,8 +101,7 @@ function selectAllCategories() {
 
 function selectCategories($idarticle) {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
         $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][2]." AS c JOIN ".$GLOBALS['db']['tables'][3]." AS ac ON c.id_category=ac.id_category WHERE id_article=:idarticle";
         $stmt = $connexion->prepare($sql);
@@ -116,39 +116,18 @@ function selectCategories($idarticle) {
     return $categories;
 }
 
-/* PARAGRAPHES */
-
-function selectParagraphs($idarticle) {
-    try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][4]." WHERE id_article=:idarticle";
-        $stmt = $connexion->prepare($sql);
-        $stmt->bindParam(':idarticle', $idarticle);
-        $stmt->execute();
-        $paragraphs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) { 
-        die('Erreur PDO : ' . $e->getMessage());
-    } catch (Exception $e) {
-        die('Erreur Générale : ' . $e->getMessage());
-    }
-    return $paragraphs;
-}
-
 /* COMMENTAIRES */
 
 function createComment() {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
         if (!(isset($_POST['currentUser']))) {
-            $sql = "INSERT INTO ".$GLOBALS['db']['tables'][5]."(id_creator, id_article, texte) VALUES (:id_creator, :id_article, :texte)";
+            $sql = "INSERT INTO ".$GLOBALS['db']['tables'][4]."(id_user, id_article, description) VALUES (:id_user, :id_article, :description)";
             $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':id_creator', $_SESSION['currentUser']);
+            $stmt->bindParam(':id_user', $_SESSION['currentUser']);
             $stmt->bindParam(':id_article', $_SESSION['lastArticle']);
-            $stmt->bindParam(':texte', $_SESSION['commentText']);
+            $stmt->bindParam(':description', $_SESSION['commentText']);
             $stmt->execute();
         } else {
             header("Location: ./login.php");
@@ -162,10 +141,9 @@ function createComment() {
 
 function selectComments($idarticle) {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
-        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][5]." WHERE id_article=:idarticle";
+        $sql = "SELECT * FROM ".$GLOBALS['db']['tables'][4]." WHERE id_article=:idarticle";
         $stmt = $connexion->prepare($sql);
         $stmt->bindParam(':idarticle', $idarticle);
         $stmt->execute();
@@ -176,4 +154,24 @@ function selectComments($idarticle) {
         die('Erreur Générale : ' . $e->getMessage());
     }
     return $comments;
+}
+
+function deleteComment() {
+    try {
+        $connexion = getConnection();
+
+        if (isset($_SESSION['currentUser'])) {
+            $sql = "DELETE FROM ".$GLOBALS['db']['tables'][4]." WHERE id_comment=:id_comment AND id_user=:user";
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(':id_comment', $_POST['id_comment']);
+            $stmt->bindParam(':user', $_SESSION['currentUser']);
+            $stmt->execute();
+        } else {
+            echo "Pas de currentUser";
+        }
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
 }

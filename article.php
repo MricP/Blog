@@ -9,9 +9,15 @@
 
         require "./src/functions.php";
         $_SESSION["currentUser"] = 2;
-
+        echo $_SESSION["currentUser"];
+        
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-            $_SESSION["lastArticle"] = (int) $_GET['id'];;
+            if ($_GET['id'] >= 0) {
+                $_SESSION["lastArticle"] = (int) $_GET['id'];;
+            } else {
+                die("Numéro d'article invalide");
+            }
+            
         } else {
             die("Article non trouvé.");
         }
@@ -28,16 +34,13 @@
         if (isset($_SESSION['currentUser'])) {
             if (isset($_SESSION['commentText'])) {
                 createComment();
-                echo "Nouveau commentaire !";
             }
         }
 
-
         /* Affichage des données de l'article*/
         $article = selectArticle($_SESSION["lastArticle"]);
-        $creator = selectUser($article["id_creator"]);
+        $creator = selectUser($article["id_author"]);
         $categories = selectCategories($_SESSION["lastArticle"]);
-        $paragraphes = selectParagraphs($_SESSION["lastArticle"]);
         $comments = selectComments($_SESSION["lastArticle"]);
         ?>
     </head>
@@ -48,7 +51,7 @@
         </div>
         <div class="section-separator"></div>
         <div class="article-container">
-            <h1><?php echo $article['titre'] ; ?></h1>
+            <h1><?php echo $article['title'] ; ?></h1>
             <div class="pastilles-container">
                 <?php 
                     for ($i = 0; $i < sizeof($categories); $i++) {
@@ -59,9 +62,7 @@
             
             <div class="article-paragraphes-container">
                 <?php 
-                    for ($i = 0; $i < sizeof($paragraphes); $i++) {
-                        echo '<p class="article-paragraphe">'.$paragraphes[strval($i)]["text"].'</p>';
-                    }
+                    echo '<p class="article-paragraphe">'.$article["description"].'</p>';
                 ?>
             </div>
             <p class="article-creator"><?php echo $creator["pseudo"]; ?></p><i class="fa-solid fa-xmark"></i>
@@ -77,7 +78,7 @@
             </form>
             <?php 
                 for ($i = 0; $i < sizeof($comments); $i++) {
-                    echo '<div class="commentaire-box"><p class="commentaire-text">'.$comments[strval($i)]["texte"].'</p><p class="commentaire-creator">'.selectUser($comments[strval($i)]["id_creator"])["pseudo"].'</p></div>';
+                    require "comment-box.php";
                 }
             ?>
             <?php 
