@@ -67,7 +67,7 @@
             <button type="submit" >Se connecter</button>
         </form>
             </main>
-    <script>
+    <!-- <script>
         /* Cet EventListener sert à supprimer les $_SESSION si la page est quitté lors de la connexion
                 - Changement de l'URL
                 - Fermeture de la page
@@ -81,7 +81,7 @@
                 unset($_SESSION['displayPseudo']);
             ?>);
         });
-    </script>
+    </script> -->
 <?php
     require_once('../includes/footer.php');
 ?>

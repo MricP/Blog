@@ -64,10 +64,6 @@ h1 {
     margin: 20px;
 }
 
-/* h1 {
-    margin: 4rem 0 2rem 0;
-} */
-
 form {
     display: flex;
     flex-direction: column;
@@ -96,6 +92,12 @@ form button {
     width: 80vw;
     height: 1px;
     background-color: var(--section-separator-color);
+}
+
+.error-message {
+    color: #FF0000;
+    border:  dashed #FFB2B2 1px ;
+    background-color: rgba(255, 178, 178, 0.28);
 }
 
 
@@ -203,4 +205,179 @@ form button {
 .page-circle-button:hover {
     color: var(--page-button-circle-color-text-hover);
     background-color: var(--page-button-circle-color-background-hover);
+}
+
+
+/* Page admin*/
+
+
+.main-admin {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100vh - var(--size-navbar));
+}
+
+.admin-left-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    background-color: rgb(243, 243, 243);
+}
+
+.admin-left-panel h1 {
+    text-align: center;
+}
+
+.admin-left-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    height: 90%;
+}
+
+.admin-left-menu button {
+    border: solid transparent 1px;
+    font-weight: bold;
+    text-align: left;
+    width: 80%;
+    background-color: rgb(243, 243, 243);
+    padding: 10px;
+    transition: all ease 0.2s;
+}
+
+.admin-left-menu button:hover {
+    color: var(--primary);
+    border-top:  solid var(--primary) 1px;
+    border-bottom:  solid var(--primary) 1px;
+}
+
+.admin-right-panel {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.admin-right-panel button {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: var(--primary);
+    transition: all ease 0.4s;
+    border: none;
+    background-color: var(--blanc);
+}
+
+.admin-right-panel input {
+    font-size: 15px;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.admin-right-panel button:hover {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+
+.admin-form-newCategory {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-form-newCategory input {
+    width: 40%;
+    height: 20px;
+}
+
+.admin-form-newCategory button {
+    width: 15%;
+}
+
+.admin-right-panel .error-message {
+    width: 90%;
+    padding: 5px 0px 5px 0px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.admin-div-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    overflow-y: auto;
+    max-height: 83%;
+}
+
+.admin-div-categories::-webkit-scrollbar {
+    width: 10px;  /* Largeur de la scrollbar */
+}
+
+.admin-div-categories::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px; 
+}
+
+.admin-div-categories::-webkit-scrollbar-thumb {
+    background-color: var(--primary); 
+    border-radius: 10px; 
+    border: 2px solid #f1f1f1; 
+}
+
+.admin-div-category {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    border: solid black 1px;
+}
+
+.with-p p{
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.with-p form {
+    width: 10%;
+}
+
+.with-input form:first-child {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+}
+
+.with-input form:first-child input{
+    width: 83%;
+    margin-right: 6%;
+}
+
+.with-input form:first-child button{
+    width: 11%;
+}
+
+
+.with-input form:last-child {
+    display: flex;
+    flex-direction: row;
+    width: 10%;
+}
+
+.with-input form:last-child button {
+    width: 100%;
+}
+
+.with-input form input {
+    width: 90%;
 }

@@ -73,7 +73,7 @@
                     unset($_SESSION['password']);
                     unset($_SESSION['pseudo']);
                     unset($_SESSION['displayPseudo']);
-                    //header("Location: ../start.php");
+                    header("Location: ../start.php");
                     
                 }
                 //L'insertion ne s'est pas bien passé, le pseudo est déjà utlisé

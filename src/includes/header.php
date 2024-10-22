@@ -1,6 +1,10 @@
 <?php
     session_start();
 
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
     if(!isset($_SESSION['currentUser'])) {
         $_SESSION['currentUser'] = NULL;
     }
@@ -16,5 +20,5 @@
 </head>
 <body>
     <Header>
-        <nav>COUCOU</nav>
+        <nav>HEADER</nav>
     </Header>
