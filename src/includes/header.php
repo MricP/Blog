@@ -4,6 +4,12 @@
     if(!isset($_SESSION['currentUser'])) {
         $_SESSION['currentUser'] = NULL;
     }
+    $_SESSION['article-title'] = "";
+    $_SESSION['article-content'] = "";
+    if(!isset($_SESSION['categories'])){
+        $_SESSION['categories'] = [];
+    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -16,5 +22,20 @@
 </head>
 <body>
     <Header>
-        <nav>COUCOU</nav>
+    <nav>
+        <ul>
+            <li>
+                SportDebate
+            </li>
+            <li>
+                <a href="./page.php">Profiter des articles</a>
+            </li>
+            <li>
+                <a href="./creationArticle.php">Créer un article</a>
+            </li>
+            <li>
+                <a href="./auth.php"  class="lienSeConnecter"> Se Connecter</a>
+            </li>
+        </ul>
+    </nav>
     </Header>

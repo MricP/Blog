@@ -5,7 +5,7 @@
     --gris: #360808da;
     --primary: rgb(71, 9, 214);
 
-    --size-navbar:35px;
+    --size-navbar:50px;
 
     --section-separator-color:var(--gris);
 
@@ -35,6 +35,44 @@ header {
 
 nav {
     height: var(--size-navbar);
+    border-bottom: solid 1px #f0f0f0;   
+    font-size: 1.125em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul{
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    list-style: none;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 5vw;
+}
+.lienSeConnecter{
+    color: var(--primary);
+
+}
+li:first-child{
+    padding-right: 20vw;
+    font-weight: 900;
+}
+
+
+a{
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+a:hover{
+    color: #a9a9ff;
+}
+
+label{
+    font-size: 1.25em;
 }
 
 footer {
@@ -48,6 +86,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 
@@ -203,4 +242,112 @@ form button {
 .page-circle-button:hover {
     color: var(--page-button-circle-color-text-hover);
     background-color: var(--page-button-circle-color-background-hover);
+}
+
+
+/*Page création d'article*/
+
+.creationArticle-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.formInput-container{
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    padding-bottom: 2%;
+    outline: none;
+}
+.article-title{
+    width: 75%;
+    outline: none;
+}
+.selected-category{
+    width: 22%;
+}
+
+.filter-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 5px;
+    margin-top: 5px;
+}
+datalist{
+    background-color: black;
+}
+
+.selected-categories{
+    display: flex;
+    flex-direction: row;
+    background-color: var(--primary);
+    width: max-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    height: 30px;
+    padding-left: 5px;
+}
+
+.selected-categories > button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.deleteCross{
+    width: 20px;
+    padding: 0;
+}
+
+.deleteCross > p{
+    margin: 0;
+}
+
+.formContent-container{
+    flex-grow: 1;
+    height: 50vh;
+    flex-direction: column;
+    display: flex;
+    width: 75%;
+    padding-bottom: 2%;
+    outline: none;
+}
+
+.article-content{
+    height: auto;
+    flex-grow: 1;
+    outline: none;
+    resize: none;
+}
+
+.creationPage-container{
+    width: 70%;
+    height: 70%;
+    background-color: #fff;
+    border-radius: 10px;
+    border: solid 2px #f0f0f0;
+    margin-left: 15%;
+    margin-top: 3%;
+    
+}
+
+.creationArticle-button{
+    background-color: var(--primary);
+    border-radius: 5px;
+    border: none;
+    height: 25px;
+    width: 200px;
+    margin-left: 0vw;    
+    margin-bottom: 2%;
+}
+.creationArticle-button:hover{
+    background-color: #909090;
+}
+.filterButton{
+    border: none;
+    background-color: transparent;
+    border-radius: 50px;
 }
