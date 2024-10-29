@@ -1,5 +1,6 @@
 <?php
     require_once('../includes/header.php');   
+    require_once('./auth-functions.php');
 ?>
     <main>
         <?php
@@ -11,5 +12,5 @@
         ?>
     </main>
 <?php
-    require_once('./footer.php');
+    require_once('../includes/footer.php');
 ?>

@@ -39,7 +39,15 @@
     if(areIdentifiersCompleted() && areInputsVerified($errorMessage)) {
         connectUser($errorMessage);
     }
+
+    /* TODO : créer un compte, créer un autre, se connecter avec le premier : BUG ICI*/ 
 ?>
+
+    <?php
+        echo isset($_SESSION['pseudo']) ? $_SESSION['pseudo']."\n" : "NULL"."\n";
+        echo isset($_SESSION['email']) ? $_SESSION['email']."\n" : "NULL"."\n";
+        echo isset($_SESSION['password']) ? $_SESSION['password']."\n" : "NULL"."\n";
+    ?>
     <main>
         <h1>Page de connexion</h1>
         <div class="error-message">

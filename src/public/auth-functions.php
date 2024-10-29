@@ -83,7 +83,7 @@
                 $sql = "INSERT INTO user (pseudo, password, email) VALUES (:pseudo, :password, :email)";
                 $stmt = $connexion->prepare($sql);
                 $stmt->bindParam(':pseudo', $_SESSION['pseudo']);
-                $stmt->bindParam(':password', $_SESSION['password']);
+                $stmt->bindParam(':password', hashPassword($_SESSION['password']));
                 $stmt->bindParam(':email', $_SESSION['email']);
                 $stmt->execute();
                 return true;
@@ -96,7 +96,7 @@
     }
 
 
-    function connectUser(&$errorMessage,) {
+    function connectUser(&$errorMessage) {
         try {
             $connexion = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
             $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -108,7 +108,7 @@
                     //L'insertion s'est bien passé, on redirige
                     if(insertUserToDB($errorMessage)) {
                         $_SESSION['currentUser']['pseudo'] = $_SESSION['pseudo'];
-                        $_SESSION['currentUser']['password'] = $_SESSION['password']; // Pensez à hacher les mots de passe
+                        $_SESSION['currentUser']['password'] = hashPassword($_SESSION['password']); // Pensez à hacher les mots de passe
                         $_SESSION['currentUser']['email'] = $_SESSION['email'];
                         unset($_SESSION['email']);
                         unset($_SESSION['password']);
@@ -118,7 +118,7 @@
                     }
                 }
             } else { //Se connecter
-                if($user['password'] == $_SESSION['password']) {
+                if($user['password'] == hashPassword($_SESSION['password'])) {
                     $_SESSION['currentUser']=$user;
                     unset($_SESSION['email']);
                     unset($_SESSION['password']);
@@ -134,5 +134,11 @@
         } catch (Exception $e) {
             die('Erreur Générale : ' . $e->getMessage());
         }
+    }
+
+
+    function hashPassword($password) {
+        // sha256 permet d'avoir le même hashage pour des chaînes identiques
+        return hash('sha256', $password);
     }
 ?>
