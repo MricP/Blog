@@ -6,7 +6,11 @@
     error_reporting(E_ALL);
 
     if(!isset($_SESSION['currentUser'])) {
-        $_SESSION['currentUser'] = NULL;
+        $_SESSION['currentUser'] = [
+            'pseudo' => null,
+            'password' => null,
+            'email' => null
+        ];
     }
 ?>
 

@@ -1,11 +1,39 @@
 <?php
-    function getUserFromDB($email,$connexion) {
-        $sql = "SELECT * FROM user WHERE email = :email";
-        $stmt = $connexion->prepare($sql);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        return empty($res) ? NULL : $res;
+    function getUserFromDBWithEmail($email) {
+        try {
+            $connexion = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
+            $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sql = "SELECT * FROM user WHERE email = :email";
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return empty($res) ? NULL : $res;
+        } catch (PDOException $e) { 
+            die('Erreur PDO : ' . $e->getMessage());
+        } catch (Exception $e) {
+            die('Erreur Générale : ' . $e->getMessage());
+        }
+    }
+
+    
+    function getUserFromDBWithPseudo($pseudo) {
+        try {
+            $connexion = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
+            $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sql = "SELECT * FROM user WHERE pseudo = :pseudo";
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(':pseudo', $pseudo);
+            $stmt->execute();
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return empty($res) ? NULL : $res;
+        } catch (PDOException $e) { 
+            die('Erreur PDO : ' . $e->getMessage());
+        } catch (Exception $e) {
+            die('Erreur Générale : ' . $e->getMessage());
+        }
     }
 
 
@@ -42,63 +70,69 @@
     }
 
 
-    function insertUserToDB(&$errorMessage,$connexion) {
-        if(!empty(getUserFromDB($_SESSION['pseudo'],$connexion))) {
-            $errorMessage = "Ce pseudo est déjà emprunté.";
-            return false;
-        } else {
-            // Insérer le nouvel utilisateur
-            $sql = "INSERT INTO user (pseudo, password, email) VALUES (:pseudo, :password, :email)";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':pseudo', $_SESSION['pseudo']);
-            $stmt->bindParam(':password', $_SESSION['password']);
-            $stmt->bindParam(':email', $_SESSION['email']);
-            $stmt->execute();
-            return true;
+    function insertUserToDB(&$errorMessage) {
+        try {
+            $connexion = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
+            $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            if(!empty(getUserFromDBWithPseudo($_SESSION['pseudo']))) {
+                $errorMessage = "Ce pseudo est déjà emprunté.";
+                return false;
+            } else {
+                // Insérer le nouvel utilisateur
+                $sql = "INSERT INTO user (pseudo, password, email) VALUES (:pseudo, :password, :email)";
+                $stmt = $connexion->prepare($sql);
+                $stmt->bindParam(':pseudo', $_SESSION['pseudo']);
+                $stmt->bindParam(':password', $_SESSION['password']);
+                $stmt->bindParam(':email', $_SESSION['email']);
+                $stmt->execute();
+                return true;
+            }
+        } catch (PDOException $e) { 
+            die('Erreur PDO : ' . $e->getMessage());
+        } catch (Exception $e) {
+            die('Erreur Générale : ' . $e->getMessage());
         }
     }
 
 
-    function connectUser(&$errorMessage,$connexion) {
-        // Vérification si le pseudo existe déjà
-        $user = getUserFromDB($_SESSION['email'],$connexion);
-        if(empty($user)) { //Créer un compte
-            $_SESSION['displayPseudo']=true;
-            if(isPseudoCompleted()){
-                //L'insertion s'est bien passé, on redirige
-                if(insertUserToDB($errorMessage,$connexion)) {
-                    echo "ok";
-                    //$_SESSION['currentUser'] =;
+    function connectUser(&$errorMessage,) {
+        try {
+            $connexion = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
+            $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // Vérification si le pseudo existe déjà
+            $user = getUserFromDBWithEmail($_SESSION['email']);
+            if(empty($user)) { //Créer un compte
+                $_SESSION['displayPseudo']=true;
+                if(isPseudoCompleted()){
+                    //L'insertion s'est bien passé, on redirige
+                    if(insertUserToDB($errorMessage)) {
+                        $_SESSION['currentUser']['pseudo'] = $_SESSION['pseudo'];
+                        $_SESSION['currentUser']['password'] = $_SESSION['password']; // Pensez à hacher les mots de passe
+                        $_SESSION['currentUser']['email'] = $_SESSION['email'];
+                        unset($_SESSION['email']);
+                        unset($_SESSION['password']);
+                        unset($_SESSION['pseudo']);
+                        unset($_SESSION['displayPseudo']);
+                        header("Location: ./start.php"); 
+                    }
+                }
+            } else { //Se connecter
+                if($user['password'] == $_SESSION['password']) {
+                    $_SESSION['currentUser']=$user;
                     unset($_SESSION['email']);
                     unset($_SESSION['password']);
                     unset($_SESSION['pseudo']);
                     unset($_SESSION['displayPseudo']);
-                    header("Location: ../start.php");
-                    
+                    header("Location: ./start.php");
+                } else {
+                    $errorMessage = "Mot de passe incorrect.";
                 }
-                //L'insertion ne s'est pas bien passé, le pseudo est déjà utlisé
             }
-        } else { //Se connecter
-            if($user['password'] == $_POST['password']) {
-                $_SESSION['currentUser'] = getUserFromDB($_SESSION['email'],$connexion);
-                unset($_SESSION['email']);
-                unset($_SESSION['password']);
-                unset($_SESSION['pseudo']);
-                unset($_SESSION['displayPseudo']);
-                //header("Location: ../start.php");
-            } else {
-                $errorMessage = "Mot de passe incorrect.";
-            }
+        } catch (PDOException $e) { 
+            die('Erreur PDO : ' . $e->getMessage());
+        } catch (Exception $e) {
+            die('Erreur Générale : ' . $e->getMessage());
         }
-    }
-
-
-    function isPseudoAlreadyUsedInDB() {
-
-    }
-
-
-    function isEmailAlreadyUsedInDB() {
-
     }
 ?>
