@@ -4,14 +4,6 @@
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
-
-    if(!isset($_SESSION['currentUser'])) {
-        $_SESSION['currentUser'] = [
-            'pseudo' => null,
-            'password' => null,
-            'email' => null
-        ];
-    }
 ?>
 
 <!DOCTYPE html>

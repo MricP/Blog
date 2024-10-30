@@ -39,7 +39,7 @@
 
     function areIdentifiersCompleted() {
         //Vérifie si l'email et le password ont bien été renseigné
-        return isset($_SESSION['email'],$_SESSION['email']);
+        return isset($_SESSION['email'],$_SESSION['password']);
     }
 
 
@@ -114,6 +114,7 @@
                         unset($_SESSION['password']);
                         unset($_SESSION['pseudo']);
                         unset($_SESSION['displayPseudo']);
+                        unset($_SESSION['lastActivity']);
                         header("Location: ./start.php"); 
                     }
                 }
@@ -124,6 +125,7 @@
                     unset($_SESSION['password']);
                     unset($_SESSION['pseudo']);
                     unset($_SESSION['displayPseudo']);
+                    unset($_SESSION['lastActivity']);
                     header("Location: ./start.php");
                 } else {
                     $errorMessage = "Mot de passe incorrect.";

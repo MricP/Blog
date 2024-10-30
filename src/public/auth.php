@@ -2,8 +2,8 @@
     require_once('../includes/header.php');   
     require_once('./auth-functions.php');
 
-    if(!empty($_SESSION['currentUser'])){
-        // header("Location: ./start.php");
+    if(isset($_SESSION['currentUser'])){
+        header("Location: ./start.php");
     }
 
     if(isset($_POST['email']) && !empty($_POST['email'])) {
@@ -26,6 +26,7 @@
         unset($_SESSION['pseudo']);
         unset($_SESSION['displayPseudo']);
         unset($_SESSION['lastActivity']);
+        $errorMessage = "Processus d'inscription expiré.";
     }
     
     if(!isset($_SESSION['displayPseudo'])) {
@@ -35,19 +36,13 @@
     if(!isset($errorMessage)) {
         $errorMessage = NULL;
     }
-    
+
     if(areIdentifiersCompleted() && areInputsVerified($errorMessage)) {
         connectUser($errorMessage);
     }
 
     /* TODO : créer un compte, créer un autre, se connecter avec le premier : BUG ICI*/ 
-?>
-
-    <?php
-        echo isset($_SESSION['pseudo']) ? $_SESSION['pseudo']."\n" : "NULL"."\n";
-        echo isset($_SESSION['email']) ? $_SESSION['email']."\n" : "NULL"."\n";
-        echo isset($_SESSION['password']) ? $_SESSION['password']."\n" : "NULL"."\n";
-    ?>
+?>    
     <main>
         <h1>Page de connexion</h1>
         <div class="error-message">
