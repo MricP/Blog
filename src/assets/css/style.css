@@ -5,7 +5,7 @@
     --gris: #360808da;
     --primary: rgb(71, 9, 214);
 
-    --size-navbar:35px;
+    --size-navbar:50px;
 
     --section-separator-color:var(--gris);
 
@@ -35,6 +35,44 @@ header {
 
 nav {
     height: var(--size-navbar);
+    border-bottom: solid 1px #f0f0f0;   
+    font-size: 1.125em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul{
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    list-style: none;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 5vw;
+}
+.lienSeConnecter{
+    color: var(--primary);
+
+}
+li:first-child{
+    padding-right: 20vw;
+    font-weight: 900;
+}
+
+
+a{
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+a:hover{
+    color: #a9a9ff;
+}
+
+label{
+    font-size: 1.25em;
 }
 
 footer {
@@ -48,6 +86,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 
