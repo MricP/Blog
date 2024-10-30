@@ -115,7 +115,7 @@
                         unset($_SESSION['pseudo']);
                         unset($_SESSION['displayPseudo']);
                         unset($_SESSION['lastActivity']);
-                        header("Location: ./start.php"); 
+                        header("Location: ./page.php"); 
                     }
                 }
             } else { //Se connecter
@@ -126,7 +126,7 @@
                     unset($_SESSION['pseudo']);
                     unset($_SESSION['displayPseudo']);
                     unset($_SESSION['lastActivity']);
-                    header("Location: ./start.php");
+                    header("Location: ./page.php");
                 } else {
                     $errorMessage = "Mot de passe incorrect.";
                 }

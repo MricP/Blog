@@ -1,6 +1,6 @@
     <?php 
-        require("header.php");
-        require("function.php");
+        require("../includes/header.php");
+        require("./function.php");
         $categories = selectAllCategories();        
     ?>
 
@@ -19,8 +19,9 @@
             <div class="formInput-container">
                 <label for="articleTitle">Titre de l'article</label>
                 <div>
-                    <input class="article-title" name="article-title" type="text">
                     <input class="selected-category" type="text" list="categories-list" placeholder="Catégorie" name="selectedCategory">
+                    <input class="article-title" name="article-title" type="text">
+                    
                     <?php 
                         if(!empty($_POST['deleteCategory'])) {
                             $valeurSup = $_POST['deleteCategory'];
@@ -42,7 +43,7 @@
                                 echo "<div class='selected-categories'>";
                                 echo    "<p>{$_SESSION['categories'][$i]}</p>";
                                 echo    "<button type='submit' name='deleteCategory' value='{$_SESSION['categories'][$i]}' class='filterButton'>";
-                                echo        "<img class='deleteCross' src='croix.svg' alt='croix supprimer'>";
+                                echo        "<img class='deleteCross' src='../assets/croix.svg' alt='croix supprimer'>";
                                 echo    "</button>";
                                 echo "</div>";  
                                 $i = $i+1;

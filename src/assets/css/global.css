@@ -2,7 +2,7 @@
 
 :root {
     --blanc: #fff;
-    --gris: #360808da;
+    --gris: #333333;
     --primary: rgb(71, 9, 214);
 
     --size-navbar:50px;
@@ -22,63 +22,31 @@
     --page-switch-color-background-hover:var(--primary);
 }
 
+::-webkit-scrollbar {
+    width: 10px;  /* Largeur de la scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px; 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--primary); 
+    border-radius: 10px; 
+    border: 2px solid #f1f1f1; 
+}
+
 * {
     margin:0;
     padding: 0;
     font-family: inter, arial, sans-serif;
 }
 
-
-header {
-    width: 100%;
-}
-
-nav {
-    height: var(--size-navbar);
-    border-bottom: solid 1px #f0f0f0;   
-    font-size: 1.125em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-ul{
-    display: flex;
-    flex-direction: row;
-    text-decoration: none;
-    list-style: none;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 5vw;
-}
-.lienSeConnecter{
-    color: var(--primary);
-
-}
-li:first-child{
-    padding-right: 20vw;
-    font-weight: 900;
-}
-
-
-a{
-    text-decoration: none;
-    color: black;
-    text-align: center;
-}
-
-a:hover{
-    color: #a9a9ff;
-}
-
-label{
-    font-size: 1.25em;
-}
-
-footer {
-    left: 0;
-    bottom: 0;
-    width: 100%;
+.error-message {
+    color: #FF0000;
+    border:  dashed #FFB2B2 1px ;
+    background-color: rgba(255, 178, 178, 0.28);
 }
 
 body {
@@ -91,12 +59,29 @@ body {
 
 
 main {
+    /* background-color: blue; */
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - var(--size-navbar));
+}
+
+button {
+    height: 25px;
+    color: var(--primary);
+    background-color: #FFFFFF;
+    font-weight: bold;
+    border: solid var(--primary) 1px;
+    border-radius: 5px;
+    transition: all ease 0.2s;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--primary);
+    color: #FFFFFF;
 }
 
 h1 {
@@ -119,28 +104,81 @@ form button {
     margin-bottom: 10px;
 }
 
-.article-list-container, .article-paragraphes-container, .commentaires-container {
+input {
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+
+/* ################## HEADER ################## */
+
+
+header {
+    width: 100%;
+}
+
+header nav {
+    height: var(--size-navbar);
+    border-bottom: solid 1px #f0f0f0;   
+    font-size: 1.125em;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    width:80vw;
-    margin: 2rem 0;
+    justify-content: center;
 }
 
-.section-separator {
-    width: 80vw;
-    height: 1px;
-    background-color: var(--section-separator-color);
+header ul{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    /* background-color: red; */
 }
 
-.error-message {
-    color: #FF0000;
-    border:  dashed #FFB2B2 1px ;
-    background-color: rgba(255, 178, 178, 0.28);
+header li>a {
+    text-decoration: inherit;
+    color: #333333;
+    transition: all ease 0.2s;
 }
 
+header li>a:hover:not(li:last-child a) {
+    color: var(--primary);
+    font-weight: bold;
+}
 
-/* Page d'un article'*/
+header li:first-child{
+    font-weight: bold;
+    margin-right: 15%;
+}
+
+header li:last-child{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 150px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: var(--primary);
+}
+
+header li:last-child a {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #FF0000; */
+    color: #FFFFFF;
+}
+
+.lienSeConnecter{
+    color: var(--primary);
+}
+
+/* ################## PAGE ARTICLE ################## */
 
 
 .article-paragraphe {
@@ -173,16 +211,20 @@ form button {
 }
 
 
-/* Page de liste d'articles*/
+/* ################## PAGE LISTE ARTICLE / ACCUEIL ################## */
 
 
 .article-box {
+    border: solid transparent 1px;
+    border-left: none;
+    border-right: none;
     margin-bottom: 2rem;
     padding: 2rem 0;
+    transition: all ease 0.2s 
 }
 
 .article-box:hover {
-    border: solid #000000 1px;
+    border: solid #333333 1px;
     border-left: none;
     border-right: none;
 }
@@ -213,12 +255,14 @@ form button {
     font-weight: 700;
     padding: 1rem;
     color: var(--page-switch-color-text);
+    border-radius: 5px;
+    transition: all ease 0.2s;
 }
 
 .page-switch-text:hover {
     color: var(--page-switch-color-text-hover);
     background-color: var(--page-switch-color-background-hover);
-    border-radius: 10px;
+    
 }
 
 .page-circle-buttons-container {
@@ -239,6 +283,7 @@ form button {
     font-size: 1.3rem;
     color: var(--page-button-circle-color-text);
     background-color: var(--page-button-circle-color-background);
+    transition: all ease 0.2s;
 }
 
 .page-circle-button:hover {
@@ -246,8 +291,22 @@ form button {
     background-color: var(--page-button-circle-color-background-hover);
 }
 
+.article-list-container, .article-paragraphes-container, .commentaires-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:80vw;
+    margin: 2rem 0;
+}
 
-/* Page admin*/
+.section-separator {
+    width: 80vw;
+    height: 1px;
+    background-color: var(--section-separator-color);
+}
+
+
+/* ################## PAGE ADMIN ################## */
 
 
 .main-admin {
@@ -312,11 +371,7 @@ form button {
 }
 
 .admin-right-panel input {
-    font-size: 15px;
-    padding: 5px;
     margin: 5px;
-    border-radius: 5px;
-    border: 1px solid black;
 }
 
 .admin-right-panel button:hover {
@@ -359,21 +414,6 @@ form button {
     max-height: 83%;
 }
 
-.admin-div-categories::-webkit-scrollbar {
-    width: 10px;  /* Largeur de la scrollbar */
-}
-
-.admin-div-categories::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px; 
-}
-
-.admin-div-categories::-webkit-scrollbar-thumb {
-    background-color: var(--primary); 
-    border-radius: 10px; 
-    border: 2px solid #f1f1f1; 
-}
-
 .admin-div-category {
     display: flex;
     flex-direction: row;
@@ -406,7 +446,6 @@ form button {
     width: 11%;
 }
 
-
 .with-input form:last-child {
     display: flex;
     flex-direction: row;
@@ -419,4 +458,146 @@ form button {
 
 .with-input form input {
     width: 90%;
+}
+
+/* ################## PAGE CREATION ARTICLE ################## */
+
+
+.creationArticle-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.formInput-container>div:first-of-type {
+    display: flex;
+    width: 100%;
+}
+
+.formInput-container{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.article-title{
+    width: 66%;
+    margin: 0;
+}
+
+.select-category-input{
+    margin-left: 1%;
+    width: 33%;
+}
+
+.filter-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin: 10px 0 10px 0 ;
+}
+
+.filter-container .selected-categories {
+    gap: 5px;
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.filter-container .category-count {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary);
+    font-weight: bold;
+    left: 10px;
+}
+
+datalist{
+    background-color: black;
+}
+
+.selected-category{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid var(--primary) 2px;
+    color: var(--primary);
+    font-weight: bold;
+    border-radius: 15px;
+    padding: 0 5px 0 5px; 
+    transition: all ease 0.2s;
+
+}
+
+.selected-category:hover {
+    background-color: var(--primary);
+    color: #FFFFFF;
+}
+
+.selected-category:hover button {
+    color: #FFFFFF;
+}
+
+.selected-category button:hover {
+    background-color: none;
+}
+
+.selected-category button{
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all ease 0.2s;
+    cursor: pointer;
+}
+
+.deleteCross{
+    font-size: 1.5rem;
+}
+
+.deleteCross > p{
+    margin: 0;
+}
+
+.formContent-container{
+    flex-grow: 1;
+    height: 50vh;
+    flex-direction: column;
+    display: flex;
+    width: 80%;
+    padding-bottom: 2%;
+    outline: none;
+}
+
+.article-content{
+    height: auto;
+    flex-grow: 1;
+    outline: none;
+    resize: none;
+}
+
+.creationPage-container{
+    width: 70%;
+    height: 70%;
+}
+
+.creationArticle-button{
+    width: 80%; 
+    margin-bottom: 2%;
+}
+
+.creationArticle-button:hover{
+    background-color: var(--primary);
+    color: #FFFFFF;
+}
+
+.filterButton{
+    border: none;
+    background-color: transparent;
+    border-radius: 50px;
 }

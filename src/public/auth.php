@@ -2,8 +2,14 @@
     require_once('../includes/header.php');   
     require_once('./auth-functions.php');
 
+    if(isset($_GET['logout'])) {
+        unset($_SESSION['currentUser']);
+        header("Location: ./page.php");
+        exit();
+    }
+
     if(isset($_SESSION['currentUser'])){
-        header("Location: ./start.php");
+        header("Location: ./page.php");
     }
 
     if(isset($_POST['email']) && !empty($_POST['email'])) {
