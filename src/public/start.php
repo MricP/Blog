@@ -1,10 +1,16 @@
 <?php
-    require_once('session_var.php');
-    require_once('header.php');   
+    require_once('../includes/header.php');   
+    require_once('./auth-functions.php');
 ?>
-    <?php
-        
-    ?>
+    <main>
+        <?php
+            $user = $_SESSION['currentUser'];
+            echo "CurrentUser : \n";
+            echo "Pseudo : ".$user['pseudo']."\n";
+            echo "Email : ".$user['email']."\n";
+            echo "Password : ".$user['password']."\n";
+        ?>
+    </main>
 <?php
-    require_once('./footer.php');
+    require_once('../includes/footer.php');
 ?>

@@ -2,18 +2,10 @@
     require_once('../includes/header.php');   
     require_once('./auth-functions.php');
 
-    if(!empty($_SESSION['currentUser'])){
-        header("Location: ../start.php");
+    if(isset($_SESSION['currentUser'])){
+        header("Location: ./start.php");
     }
 
-    if(!isset($_SESSION['displayPseudo'])) {
-        $_SESSION['displayPseudo']=false;
-    }
-
-    if(!isset($errorMessage)) {
-        $errorMessage = NULL;
-    }
-    
     if(isset($_POST['email']) && !empty($_POST['email'])) {
         $_SESSION['email'] = $_POST['email'];
     }
@@ -26,24 +18,31 @@
         $_SESSION['pseudo'] = $_POST['pseudo'];
     }
 
-    if(areIdentifiersCompleted() && areInputsVerified($errorMessage)) {
-        try {
-            $connexion = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
-            $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            connectUser($errorMessage,$connexion);
-        } catch (PDOException $e) { 
-            die('Erreur PDO : ' . $e->getMessage());
-        } catch (Exception $e) {
-            die('Erreur Générale : ' . $e->getMessage());
-        }
+    $timeout_duration = 10;
+    // Expiration de la création de compte au bout de 30s sans tenter de rentrer un pseudo
+    if (isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
+        unset($_SESSION['email']);
+        unset($_SESSION['password']);
+        unset($_SESSION['pseudo']);
+        unset($_SESSION['displayPseudo']);
+        unset($_SESSION['lastActivity']);
+        $errorMessage = "Processus d'inscription expiré.";
     }
-?>
-    <?php
-        // echo isset($_SESSION['email']) ? $_SESSION['email']."\n" : "NULL"."\n";
-        // echo isset($_SESSION['password']) ? $_SESSION['password']."\n" : "NULL"."\n";
-        // echo isset($_SESSION['pseudo']) ? $_SESSION['pseudo']."\n" : "NULL"."\n";
-    ?>
+    
+    if(!isset($_SESSION['displayPseudo'])) {
+        $_SESSION['displayPseudo'] = false;
+    }
 
+    if(!isset($errorMessage)) {
+        $errorMessage = NULL;
+    }
+
+    if(areIdentifiersCompleted() && areInputsVerified($errorMessage)) {
+        connectUser($errorMessage);
+    }
+
+    /* TODO : créer un compte, créer un autre, se connecter avec le premier : BUG ICI*/ 
+?>    
     <main>
         <h1>Page de connexion</h1>
         <div class="error-message">
@@ -52,6 +51,7 @@
         <form method='POST'>
             <?php
                 if($_SESSION['displayPseudo']){ // Nouveau compte
+                    $_SESSION['lastActivity'] = time();
                     echo "<label for='pseudo'>Pseudo*";
                     echo "    <input type='text' name='pseudo' REQUIRED>";
                     echo "</label>";
@@ -66,22 +66,8 @@
             ?>
             <button type="submit" >Se connecter</button>
         </form>
-            </main>
-    <script>
-        /* Cet EventListener sert à supprimer les $_SESSION si la page est quitté lors de la connexion
-                - Changement de l'URL
-                - Fermeture de la page
-        */
-        window.addEventListener("beforeunload", function(event) {
-            // Utilise fetch pour envoyer une requête au serveur
-            navigator.sendBeacon(<?php
-                unset($_SESSION['email']);
-                unset($_SESSION['password']);
-                unset($_SESSION['pseudo']);
-                unset($_SESSION['displayPseudo']);
-            ?>);
-        });
-    </script>
+    </main>
 <?php
     require_once('../includes/footer.php');
 ?>
+
