@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 16 oct. 2024 à 19:55
+-- Généré le : mer. 30 oct. 2024 à 20:29
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -53,8 +53,25 @@ CREATE TABLE `article_categories` (
 
 CREATE TABLE `category` (
   `id_category` int(4) NOT NULL,
-  `name_category` varchar(15) NOT NULL
+  `name_category` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `category`
+--
+
+INSERT INTO `category` (`id_category`, `name_category`) VALUES
+(17, 'Athlétisme'),
+(15, 'Basket-ball'),
+(11, 'Cyclisme'),
+(25, 'E-sport'),
+(21, 'Equitation'),
+(22, 'F1'),
+(14, 'Football'),
+(34, 'Football Américain'),
+(20, 'Natation'),
+(23, 'Ping pong'),
+(16, 'Tennis');
 
 -- --------------------------------------------------------
 
@@ -105,7 +122,8 @@ ALTER TABLE `article_categories`
 -- Index pour la table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id_category`);
+  ADD PRIMARY KEY (`id_category`),
+  ADD UNIQUE KEY `name_category` (`name_category`);
 
 --
 -- Index pour la table `comment`
@@ -131,13 +149,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `article`
 --
 ALTER TABLE `article`
-  MODIFY `id_article` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_article` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id_category` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_category` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT pour la table `comment`
@@ -149,7 +167,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_user` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- Contraintes pour les tables déchargées

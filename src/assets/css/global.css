@@ -44,6 +44,8 @@
 }
 
 .error-message {
+    padding: 5px 0px 5px 0px;
+    text-align: center;
     color: #FF0000;
     border:  dashed #FFB2B2 1px ;
     background-color: rgba(255, 178, 178, 0.28);
@@ -111,6 +113,11 @@ input {
     border: 1px solid black;
 }
 
+.error-message-auth {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 
 /* ################## HEADER ################## */
 
@@ -144,7 +151,7 @@ header li>a {
     transition: all ease 0.2s;
 }
 
-header li>a:hover:not(li:last-child a) {
+header li>a:hover:not(li:last-child a):not(li:first-child a) {
     color: var(--primary);
     font-weight: bold;
 }
@@ -336,7 +343,7 @@ header li:last-child a {
     height: 90%;
 }
 
-.admin-left-menu button {
+.admin-left-menu .button-left-menu {
     border: solid transparent 1px;
     font-weight: bold;
     text-align: left;
@@ -346,7 +353,7 @@ header li:last-child a {
     transition: all ease 0.2s;
 }
 
-.admin-left-menu button:hover {
+.admin-left-menu .button-left-menu:hover {
     color: var(--primary);
     border-top:  solid var(--primary) 1px;
     border-bottom:  solid var(--primary) 1px;
@@ -400,8 +407,6 @@ header li:last-child a {
 
 .admin-right-panel .error-message {
     width: 90%;
-    padding: 5px 0px 5px 0px;
-    text-align: center;
     margin-bottom: 1rem;
 }
 
@@ -411,7 +416,7 @@ header li:last-child a {
     gap: 10px;
     width: 90%;
     overflow-y: auto;
-    max-height: 83%;
+    max-height: 74%;
 }
 
 .admin-div-category {
@@ -462,6 +467,10 @@ header li:last-child a {
 
 /* ################## PAGE CREATION ARTICLE ################## */
 
+
+.creationPage-container .error-message {
+    margin-top: 10px;
+}
 
 .creationArticle-form{
     display: flex;
