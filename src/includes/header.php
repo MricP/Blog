@@ -25,7 +25,7 @@
     <Header>
     <nav>
         <ul>
-            <li>SportDebate</li>
+            <li><a href="./page.php">SportDebate</a></li>
             <li><a href="./page.php">Profiter des articles</a></li>
             <li><a href="./creationArticle.php">Créer un article</a></li>
             

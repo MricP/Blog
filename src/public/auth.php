@@ -39,10 +39,6 @@
         $_SESSION['displayPseudo'] = false;
     }
 
-    if(!isset($errorMessage)) {
-        $errorMessage = NULL;
-    }
-
     if(areIdentifiersCompleted() && areInputsVerified($errorMessage)) {
         connectUser($errorMessage);
     }
@@ -51,9 +47,14 @@
 ?>    
     <main>
         <h1>Page de connexion</h1>
-        <div class="error-message">
-            <?php echo $errorMessage ?>
-        </div>
+        
+        <?php 
+            if(isset($errorMessage)){
+                echo "<div class='error-message error-message-auth'>{$errorMessage}</div>";
+                unset($errorMessage);
+            }
+        ?>
+
         <form method='POST'>
             <?php
                 if($_SESSION['displayPseudo']){ // Nouveau compte

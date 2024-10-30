@@ -29,9 +29,9 @@
     <div class='admin-left-panel'>
         <h1>Espace Admin</h1>
         <div class='admin-left-menu'>
-            <button class="categories">Categories</button>
-            <button class="categories">Autre</button>
-            <button class="categories">Autre</button>
+            <p class="button-left-menu menu-categories">Categories</p>
+            <p class="button-left-menu ">Autre</p>
+            <p class="button-left-menu ">Autre</p>
         </div>
     </div>
     <div class='admin-right-panel'>

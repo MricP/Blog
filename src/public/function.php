@@ -32,7 +32,6 @@ function selectUser($idUser) {
     return $users;
 }
 
-
 function selectAllCategories() {
     try {
         //$connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", $GLOBALS['db']['username'], $GLOBALS['db']['password']);
@@ -51,8 +50,6 @@ function selectAllCategories() {
     return $categories;
 }
 
-
-
 function selectLastArticle() {
     try {
         $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", 'root', '');
@@ -70,7 +67,6 @@ function selectLastArticle() {
     }
     return $article;
 }
-
 
 function createArticle() {
     try {
@@ -129,3 +125,29 @@ function createArticle() {
         die('Erreur Générale : ' . $e->getMessage());
     }
 }
+
+function isCategoryInDB($category,&$errorMessage) {
+    try {
+        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", 'root', '');
+        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT COUNT(*) FROM category WHERE name_category = :category";
+        $stmt = $connexion->prepare($sql);
+        $stmt->bindParam(':category', $category);
+        $stmt->execute();
+        
+        $count = $stmt->fetchColumn();
+
+        if ($count == 0) {
+            $errorMessage = "La catégorie sélectionnée n'existe pas.";
+            return false;
+        }
+        return true;
+
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
+}
+
