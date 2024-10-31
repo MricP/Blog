@@ -58,7 +58,7 @@
     <datalist id='categories-list'>
         <?php
             foreach($categories as $category) {
-                echo "<option value='{$category['name_category']}'></option>";
+                ?><option value="<?php echo $category['name_category']?>"></option>;<?php
             }
         ?>
     </datalist>
@@ -69,7 +69,7 @@
             <h1>Créez votre article</h1>
 
             <div class="formInput-container">
-                <label for="articleTitle">Titre de l'article</label>
+                <label for="articleTitle">Titre de l'article*</label>
 
                 <div class="article-title-container">
                     <input class="article-title" name="article-title" type="text" value="<?php if(isset($_POST['article-title'])) echo $_POST['article-title']?>">
@@ -113,8 +113,8 @@
             </div>
 
             <div class="formContent-container">
-                <label for="article-content">Contenu de l'article</label>
-                <textarea id="textarea" class="article-content" name="article-content" oninput="updateCharacterCount()"><?php if(isset($_POST['article-content'])) echo $_POST['article-content']?></textarea>
+                <label for="article-content">Contenu de l'article*</label>
+                <textarea id="textarea" class="article-content" name="article-content" maxlength='4000' oninput="updateCharacterCount()"><?php if(isset($_POST['article-content'])) echo $_POST['article-content']?></textarea>
                 <div id="characterCount"></div>
             </div> 
 

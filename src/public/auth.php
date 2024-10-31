@@ -26,7 +26,7 @@
 
     $timeout_duration = 10;
     // Expiration de la création de compte au bout de 10s sans tenter de rentrer un pseudo
-    if (isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
+    if (isset($_SESSION['lastActivity']) && !empty($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
         unset($_SESSION['email']);
         unset($_SESSION['password']);
         unset($_SESSION['pseudo']);

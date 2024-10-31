@@ -106,7 +106,7 @@ form button {
     margin-bottom: 10px;
 }
 
-input {
+input, textarea {
     font-size: 15px;
     padding: 5px;
     border-radius: 5px;
@@ -366,6 +366,10 @@ header li:last-child a {
     flex-direction: column;
 }
 
+.admin-right-panel h2 {
+    margin-top: 1rem;
+}
+
 .admin-right-panel button {
     padding: 5px;
     margin: 5px;
@@ -554,6 +558,7 @@ datalist{
 }
 
 .selected-category:hover button {
+    background-color: transparent;
     color: #FFFFFF;
 }
 
@@ -586,6 +591,13 @@ datalist{
     width: 80%;
     padding-bottom: 2%;
     outline: none;
+}
+
+.formContent-container #characterCount {
+    position: absolute;
+    right: 10%;
+    color: var(--primary);
+    font-weight: 600;
 }
 
 .article-content{

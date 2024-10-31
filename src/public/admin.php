@@ -62,10 +62,10 @@
                         <div class='admin-div-category with-input'>
                             <form class='admin-div-category-withInput' method='POST'>
                                 <input type='text' name='newCategoryName' value='<?php echo $category['name_category']; ?>'></input>
-                                <button type='submit' name='modify' value='<?php echo $category['id_category']; ?>'>Modifier</button>
+                                <button type='submit' name='modify' value="<?php echo $category['id_category']; ?>">Modifier</button>
                             </form>
                             <form method='POST'>
-                                <button type='submit' name='delete' value='<?php echo $category['id_category']; ?>'>Supprimer</button>
+                                <button type='submit' name='delete' value="<?php echo $category['id_category']; ?>">Supprimer</button>
                             </form>
                         </div>
                     <?php } else { ?>
