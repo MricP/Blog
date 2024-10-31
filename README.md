@@ -9,7 +9,7 @@ Ce projet est un blog développé en PHP dans le cadre d'un TP noté pour le BUT
 • Présenter et communiquer autour d'un projet technique.  
 # Fonctionnalités
 
-**Utilisateurs**
+**Utilisateurs**  
 • Page de Connexion : Permet la connexion via email et mot de passe. Si l’utilisateur n’a pas de compte, il sera créé à la volée.  
 • Page d’Accueil : Affiche tous les articles disponibles avec possibilité de filtrer par pseudo d'auteur.  
 • Affichage d’un Article : Affiche un article unique avec ses commentaires et inclut un formulaire pour ajouter un commentaire.  
@@ -20,7 +20,7 @@ Ce projet est un blog développé en PHP dans le cadre d'un TP noté pour le BUT
 
 # Détails sur les utilisateurs et accès
 
-Voici les utilisateurs et le compte administrateur pré-configurés pour le projet :
+Voici les utilisateurs et le compte administrateur pré-configurés pour le projet :  
 
 **Liste des comptes déjà créés :**  
     (Mot de passe par défaut : azerty123)  
