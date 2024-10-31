@@ -23,20 +23,23 @@
 </head>
 <body>
     <Header>
-    <nav>
-        <ul>
-            <li><a href="./page.php">SportDebate</a></li>
-            <li><a href="./page.php">Profiter des articles</a></li>
-            <li><a href="./creationArticle.php">Créer un article</a></li>
-            
-                <?php if(isset($_SESSION['currentUser'])){ ?>
-                    <li><a href='./auth.php?logout=1' class='lienSeConnecter'>Se déconnecter</a></li>
-                <?php } else { ?>
-                    <li><a href='./auth.php' class='lienSeConnecter'>Se connecter</a></li>
-                <?php } ?>
-            
-            
-            
-        </ul>
-    </nav>
+        <nav>
+            <ul>
+                <li><a href="./page.php">SportDebate</a></li>
+                <li><a href="./page.php">Profiter des articles</a></li>
+                <li><a href="./creationArticle.php">Créer un article</a></li>
+                    
+                
+                <?php 
+                    if(isset($_SESSION['currentUser'])){ 
+                        if($_SESSION['currentUser']['userType'] == 'admin') {
+                            echo "<li><a href='./admin.php'>Menu admin</a></li>";
+                        }
+                        echo "<li><a href='./auth.php?logout=1' class='lienSeConnecter'>Se déconnecter</a></li>";
+                    } else {
+                        echo "<li><a href='./auth.php' class='lienSeConnecter'>Se connecter</a></li>";
+                    }
+                ?>
+            </ul>
+        </nav>
     </Header>

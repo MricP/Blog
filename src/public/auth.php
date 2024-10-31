@@ -25,7 +25,7 @@
     }
 
     $timeout_duration = 10;
-    // Expiration de la création de compte au bout de 30s sans tenter de rentrer un pseudo
+    // Expiration de la création de compte au bout de 10s sans tenter de rentrer un pseudo
     if (isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
         unset($_SESSION['email']);
         unset($_SESSION['password']);
@@ -40,7 +40,10 @@
     }
 
     if(areIdentifiersCompleted() && areInputsVerified($errorMessage)) {
-        connectUser($errorMessage);
+        if(connectUser($errorMessage)) { // Si la connexion se passe bien, on redirige
+            // Système de redirection en fonction de la page de provenance
+            isset($_GET['from']) ? header("Location: ".$_GET['from']) : header("Location: ./page.php");
+        }
     }
 
     /* TODO : créer un compte, créer un autre, se connecter avec le premier : BUG ICI*/ 

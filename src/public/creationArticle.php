@@ -3,13 +3,34 @@
         require("./function.php");
         $categories = selectAllCategories();
 
-        if(!empty($_POST['article-title']) && !empty($_SESSION['categories']) && !empty($_POST['article-content'])){
-            $_SESSION['currentUser'] = 8;                 
-            $_SESSION['article-title'] = $_POST['article-title'];
-            $_SESSION['article-content'] = $_POST['article-content'];
+        if(!isset($_SESSION['currentUser'])) {
+            header("Location: ./auth.php?from=creationArticle.php");
+        }
+
+        if(isset($_POST['article-content'])) { 
+            if(empty($_POST['article-content']) || strlen($_POST['article-content'])<=100) {
+                $errorMessage = "L'article doit comporter plus de 100 caractères.";
+                $_SESSION['lastActivity'] = time(); //On relance le timer pour repouser l'unset de $_SESSION['categories'];
+            } else {
+                $_SESSION['article-content'] = $_POST['article-content'];
+            }   
+        }
+
+        if(isset($_POST['article-title'])) {
+            if(empty($_POST['article-title'])) {
+                $errorMessage = "L'article doit porter un titre.";
+                $_SESSION['lastActivity'] = time(); //On relance le timer pour repouser l'unset de $_SESSION['categories'];
+            } else {
+                $_SESSION['article-title'] = $_POST['article-title'];
+            }
+        }
+
+        
+
+        if(isset($_SESSION['article-title'],$_SESSION['article-content']) && !empty($_SESSION['categories']) && !empty($_SESSION['article-title']) &&!empty($_SESSION['article-content'])){          
             createArticle();
             header("Location: ./page.php");
-            unset($_SESSION['categories']);
+            unset($_SESSION['article-title'],$_SESSION['article-content'],$_SESSION['categories']);
         }
 
         if(!empty($_POST['deleteCategory'])) {
@@ -21,15 +42,15 @@
             }
         }
 
-        if (!empty($_POST['selectedCategory']) && sizeof($_SESSION['categories']) < 5 && !in_array($_POST['selectedCategory'], $_SESSION['categories'])) {
-            if (isCategoryInDB($_POST['selectedCategory'], $errorMessage)) {
+        if (!empty($_POST['selectedCategory']) && sizeof($_SESSION['categories']) < 5) {
+            if (!in_array($_POST['selectedCategory'], $_SESSION['categories']) && isCategoryInDB($_POST['selectedCategory'], $errorMessage)) {
                 array_push($_SESSION['categories'], $_POST['selectedCategory']);
-                $_SESSION['lastActivity'] = time();
             }
+            $_SESSION['lastActivity'] = time(); //Timer pour la suppression d
         }
         $timeout_duration = 5;
 
-        if ( sizeof($_SESSION['categories']) != 0 && isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
+        if (sizeof($_SESSION['categories']) != 0 && isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
             unset($_SESSION['categories']);
         }
     ?>
@@ -44,14 +65,14 @@
 
     <main class="creationPage-container">
         <form class="creationArticle-form" method="POST">
-            <button type="submit" style="display: none"></button>
+            <button type="submit" style="display: none"></button>  <!-- Bouton invisible empechant de casser le système de categories-->
             <h1>Créez votre article</h1>
 
             <div class="formInput-container">
                 <label for="articleTitle">Titre de l'article</label>
 
                 <div class="article-title-container">
-                    <input class="article-title" name="article-title" type="text">
+                    <input class="article-title" name="article-title" type="text" value="<?php if(isset($_POST['article-title'])) echo $_POST['article-title']?>">
                     <input class="select-category-input" type="text" list="categories-list" placeholder="Catégorie" name="selectedCategory">
                 </div>
 
@@ -82,9 +103,9 @@
                                     $temp = sizeof($_SESSION['categories']);
                                 }   
                                 
-                            }else{
-                                    $temp = 0;
-                                }
+                            } else {
+                                $temp = 0;
+                            }
                         ?>
                     </div>
                     <?php if($temp>0) echo "<div class='category-count'>$temp / 5</div>" ?>
@@ -93,12 +114,27 @@
 
             <div class="formContent-container">
                 <label for="article-content">Contenu de l'article</label>
-                <textarea class="article-content" name="article-content" type="text"></textarea>
+                <textarea id="textarea" class="article-content" name="article-content" oninput="updateCharacterCount()"><?php if(isset($_POST['article-content'])) echo $_POST['article-content']?></textarea>
+                <div id="characterCount"></div>
             </div> 
 
             <button type="submit" class="creationArticle-button">Valider</button>
         </form>
     </main>
+    <script>
+        function updateCharacterCount() {
+            const textarea = document.getElementById('textarea');
+            const characterCount = document.getElementById('characterCount');
+            const count = textarea.value.length; // Obtient le nombre de caractères
+            characterCount.textContent = `${count} / 4000`; // Met à jour le texte
+        }
+
+        // Appel de la fonction pour mettre à jour le compteur au chargement de la page
+        window.onload = function() {
+            updateCharacterCount(); // Met à jour le compteur dès le chargement
+        };
+    </script>
+    
 <?php  
     require_once('../includes/footer.php');
 ?>    

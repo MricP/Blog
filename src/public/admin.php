@@ -4,6 +4,14 @@
 ?>
 
 <?php
+    if(!isset($_SESSION['currentUser'])) {
+        header("Location: ./auth.php?from=admin.php");
+    } else {
+        if($_SESSION['currentUser']['userType'] != 'admin') {
+            header("Location: ./page.php");
+        }
+    }
+
     if(isset($_POST['delete']) && !empty($_POST['delete'])) {
         deleteCategory((int)$_POST['delete']);
         unset($_POST['delete']);

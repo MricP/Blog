@@ -107,30 +107,29 @@
                 if(isPseudoCompleted()){
                     //L'insertion s'est bien passé, on redirige
                     if(insertUserToDB($errorMessage)) {
-                        $_SESSION['currentUser']['pseudo'] = $_SESSION['pseudo'];
-                        $_SESSION['currentUser']['password'] = hashPassword($_SESSION['password']); // Pensez à hacher les mots de passe
-                        $_SESSION['currentUser']['email'] = $_SESSION['email'];
+                        $_SESSION['currentUser'] = getUserFromDBWithEmail($_SESSION['email']);
                         unset($_SESSION['email']);
                         unset($_SESSION['password']);
                         unset($_SESSION['pseudo']);
                         unset($_SESSION['displayPseudo']);
                         unset($_SESSION['lastActivity']);
-                        header("Location: ./page.php"); 
+                        return true;
                     }
                 }
             } else { //Se connecter
                 if($user['password'] == hashPassword($_SESSION['password'])) {
-                    $_SESSION['currentUser']=$user;
+                    $_SESSION['currentUser'] = $user;
                     unset($_SESSION['email']);
                     unset($_SESSION['password']);
                     unset($_SESSION['pseudo']);
                     unset($_SESSION['displayPseudo']);
                     unset($_SESSION['lastActivity']);
-                    header("Location: ./page.php");
+                    return true;
                 } else {
                     $errorMessage = "Mot de passe incorrect.";
                 }
             }
+            return false;
         } catch (PDOException $e) { 
             die('Erreur PDO : ' . $e->getMessage());
         } catch (Exception $e) {

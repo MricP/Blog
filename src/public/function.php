@@ -79,7 +79,7 @@ function createArticle() {
                 $stmt = $connexion->prepare($sql);
                 $stmt->bindParam(':title', $_SESSION['article-title']);
                 $stmt->bindParam(':description', $_SESSION['article-content']);
-                $stmt->bindParam(':id_author', $_SESSION['currentUser']);
+                $stmt->bindParam(':id_author', $_SESSION['currentUser']['id_user']);
                 $stmt->execute();
             
                 $lastArticle = selectLastArticle();
@@ -116,7 +116,7 @@ function createArticle() {
                 }
             }
         } else {
-            header("Location: ./login.php");
+            header("Location: ./auth.php");
             exit();
         }}
     } catch (PDOException $e) { 
