@@ -8,9 +8,8 @@
             $_SESSION['article-title'] = $_POST['article-title'];
             $_SESSION['article-content'] = $_POST['article-content'];
             createArticle();
-            session_destroy();
-
             header("Location: ./page.php");
+            unset($_SESSION['categories']);
         }
 
         if(!empty($_POST['deleteCategory'])) {
@@ -25,7 +24,13 @@
         if (!empty($_POST['selectedCategory']) && sizeof($_SESSION['categories']) < 5 && !in_array($_POST['selectedCategory'], $_SESSION['categories'])) {
             if (isCategoryInDB($_POST['selectedCategory'], $errorMessage)) {
                 array_push($_SESSION['categories'], $_POST['selectedCategory']);
+                $_SESSION['lastActivity'] = time();
             }
+        }
+        $timeout_duration = 5;
+
+        if ( sizeof($_SESSION['categories']) != 0 && isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
+            unset($_SESSION['categories']);
         }
     ?>
 
@@ -45,7 +50,7 @@
             <div class="formInput-container">
                 <label for="articleTitle">Titre de l'article</label>
 
-                <div>
+                <div class="article-title-container">
                     <input class="article-title" name="article-title" type="text">
                     <input class="select-category-input" type="text" list="categories-list" placeholder="Catégorie" name="selectedCategory">
                 </div>
@@ -61,7 +66,8 @@
                     <div class="selected-categories">
                         <?php 
                             $i = 0;
-                            while($i < sizeof($_SESSION['categories'])){
+                            if(!empty($_SESSION['categories'])){
+                                while($i < sizeof($_SESSION['categories'])){
                                 echo "<div class='selected-category'>";
                                 echo    "<p>{$_SESSION['categories'][$i]}</p>";
                                 echo    "<button type='submit' name='deleteCategory' value='{$_SESSION['categories'][$i]}' class='filterButton'>";
@@ -69,8 +75,16 @@
                                 echo    "</button>";
                                 echo "</div>";  
                                 $i = $i+1;
-                            }
-                            $temp = sizeof($_SESSION['categories']);
+                                }
+                            } 
+                            if(isset($_SESSION['categories'])){
+                                if($_SESSION['categories'] !== null){
+                                    $temp = sizeof($_SESSION['categories']);
+                                }   
+                                
+                            }else{
+                                    $temp = 0;
+                                }
                         ?>
                     </div>
                     <?php if($temp>0) echo "<div class='category-count'>$temp / 5</div>" ?>
@@ -86,5 +100,5 @@
         </form>
     </main>
 <?php  
-    require_once('../includes/footer.php')
+    require_once('../includes/footer.php');
 ?>    
