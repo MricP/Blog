@@ -23,7 +23,7 @@ $GLOBALS['db']['tables']['ALIAS_TABLE']['fields']['ALIAS_CHAMP]
 
 $db = [
     "host" => "localhost",
-    "name" => "tpblog",
+    "name" => "blog",
     "username" =>"root",
     "password" => "",
     "tables" => [
@@ -36,42 +36,42 @@ $db = [
         Modifier le nom en minuscule.
         */
         "USERS" => [
-            "name" => "users",
+            "name" => "user",
             "fields" => [
                 "ID" => "id_user",
                 "PSEUDO" => "pseudo",
                 "EMAIL" => "email",
                 "PASSWORD" => "password",
-                "TYPE_USER" => "type_user",
+                "TYPE_USER" => "userType",
                 "IS_HASHED" => "is_hashed"
             ]
         ],
         "ARTICLES" => [
-            "name" => "articles",
+            "name" => "article",
             "fields" => [
                 "ID" => "id_article",
                 "TITLE" => "title",
                 "AUTHOR" => "id_author",
-                "DATE" => "date_creation",
+                "DATE" => "creation_date",
                 "TEXT" => "text"
             ]
         ], 
         "CATEGORIES" => [
-            "name" => "categories",
+            "name" => "category",
             "fields" => [
                 "ID" => "id_category",
                 "NAME" => "name_category",
             ]
         ], 
         "ARTICLES_CATEGORIES" => [
-            "name" => "articles_categories",
+            "name" => "article_categories",
             "fields" => [
                 "ARTICLE" => "id_article",
                 "CATEGORY" => "id_category",
             ]
         ],  
         "COMMENTS" => [
-            "name" => "comments",
+            "name" => "comment",
             "fields" => [
                 "ID" => "id_comment",
                 "AUTHOR" => "id_author",
@@ -80,7 +80,7 @@ $db = [
             ]
         ],  
         "LIKES" => [
-            "name" => "likes",
+            "name" => "article_likes",
             "fields" => [
                 "ARTICLE" => "id_article",
                 "AUTHOR" => "id_user",
