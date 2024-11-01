@@ -1,0 +1,30 @@
+<?php
+    require_once('../includes/header.php');
+
+    $nombreArticles = 5;
+    $nombreBoutonsPage = 3;
+?>
+    <main>
+        <h1>Page 1 - Articles de 1 à <?php echo $nombreArticles ?></h1>
+        <div class="article-list-container">
+            <?php 
+                for ($i = 0; $i < $nombreArticles; $i++) {
+                    require "article-box.php";
+                }
+            ?> 
+        </div>
+        <div class="page-switch-container">
+            <span class="page-switch-text">Précédent</span>
+            <div class="page-circle-buttons-container">
+                <?php 
+                    for ($i = 1; $i <= $nombreBoutonsPage; $i++) {
+                        echo '<div class="page-circle-button">'.$i.'</div>';
+                    }
+                ?>
+            </div>
+            <span class="page-switch-text">Suivant</span>
+        </div>
+    </main>
+<?php
+    require_once('../includes/footer.php');
+?>
