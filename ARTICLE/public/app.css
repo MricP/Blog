@@ -1,0 +1,509 @@
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    fichier: app.css
+    auteur : Mathieu CORNE
+    description: Fichier de style du blog
+*/
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    IMPORTATIONS
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    PRECONFIGURATIONS
+*/
+
+:root {
+  --blanc: #fff;
+  --gris: #360808da;
+  --primary: rgb(71, 9, 214);
+
+  --section-separator-color: var(--primary);
+
+  /* Bouton de redirection du message d'erreur */
+  --error-redirect-text-color: var(--blanc);
+  --error-redirect-text-color-hover: var(--primary);
+  --error-redirect-background-color: var(--primary);
+
+  /* Options de la barre de navigation */
+  --navbar-option-text-color-hover: var(--blanc);
+  --navbar-option-background-color-hover: var(--primary);
+
+  --del-article-submit-button-text-color: var(--blanc);
+  --del-article-submit-button-text-color-hover: var(--primary);
+  --del-article-submit-button-background-color: var(--primary);
+  --del-article-submit-button-background-color-hover: transparent;
+  --del-article-submit-button-border-color: var(--blanc);
+  --del-article-submit-button-border-color-hover: var(--primary);
+
+  /* Bouton de Pagination (Précédent/Suivant)*/
+  --page-switch-color-text-color: var(--primary);
+  --page-switch-color-text-color-hover: var(--blanc);
+  --page-switch-color-background-hover: var(--primary);
+
+  /* Pastilles - Catégorie */
+  --pastille-category-text-color: var(--blanc);
+  --pastille-category-text-color-hover: var(--primary);
+  --pastille-category-background-color: var(--primary);
+
+  /* Bouton - Nouveau commentaire */
+  --new-commentaire-submit-button-text-color: var(--primary);
+  --new-commentaire-submit-button-text-color-hover: var(--blanc);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: inter, arial, sans-serif;
+  text-decoration: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+button {
+  border: none;
+}
+
+a {
+  color: #000;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      NAVBAR 
+*/
+
+.navbar-container {
+  width: 80vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0 1rem 0;
+  margin: 0 10vw;
+}
+
+.navbar-option {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 10px;
+  transition: 0.4s all ease-in-out;
+}
+
+.navbar-option:hover {
+  color: var(--navbar-option-text-color-hover);
+  background-color: var(--navbar-option-background-color-hover);
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      MESSAGES D'ERREURS 
+*/
+
+.error-container {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-message {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.error-redirect {
+  font-size: 1.5rem;
+  padding: 1rem 3rem;
+  border-radius: 50px;
+  color: var(--error-redirect-text-color);
+  background-color: var(--error-redirect-background-color);
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      CONTAINERS 
+*/
+
+.article-list-container,
+.commentaires-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+
+.article-list-container {
+  font-size: 1.2rem;
+  margin: 2rem 0;
+}
+
+.section-separator {
+  width: 80vw;
+  height: 5px;
+  background-color: var(--section-separator-color);
+  border-radius: 10px;
+  margin: 0 10vw;
+}
+
+.pastilles-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.pastille-category {
+  width: fit-content;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  margin: 0 1rem 0 0;
+  border-radius: 50px;
+  border: solid 1px var(--blanc);
+  color: var(--pastille-category-text-color);
+  background-color: var(--pastille-category-background-color);
+  transition: 0.4s all ease-in-out;
+  cursor: pointer;
+}
+
+.pastille-category:hover {
+  color: var(--primary);
+  background-color: transparent;
+  border: solid 1px var(--pastille-category-text-color-hover);
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      PAGE D'ARTICLE (ARTICLE.PHP)
+*/
+
+.article-container {
+  margin: 2rem 10vw;
+}
+
+.article-container > h1 {
+  margin: 0 0 1.5rem 0;
+}
+
+.article-text {
+  width: 80vw;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.form-del-article {
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 10vw;
+}
+
+.del-article-submit-button {
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  color: var(--del-article-submit-button-text-color);
+  background-color: var(--del-article-submit-button-background-color);
+  border: solid 1px var(--del-article-submit-button-border-color);
+  transition: 0.4s all ease-in-out;
+  cursor: pointer;
+}
+
+.del-article-submit-button:hover {
+  color: var(--del-article-submit-button-text-color-hover);
+  background-color: var(--del-article-submit-button-background-color-hover);
+  border: solid 1px var(--del-article-submit-button-border-color-hover);
+}
+
+.commentaires-container {
+  margin: 4rem 10vw;
+}
+
+.commentaire-box {
+  width: 69%;
+  margin-bottom: 2rem;
+  padding: 1rem 1rem;
+  border-left: solid 5px var(--primary);
+}
+
+.commentaire-text {
+  margin: 1rem 0;
+  transition: 0.4s all ease-in-out;
+}
+
+.commentaire-text:hover {
+  font-size: 1.08rem;
+}
+
+.article-creator {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem 0;
+}
+
+.article-date {
+}
+
+.commentaire-author {
+  font-weight: 600;
+}
+
+.form-new-commentaire {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-commentaire-label {
+  margin: 1rem 0;
+}
+
+.new-commentaire-text {
+  width: 70vw;
+  height: 50px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 1.2rem;
+  border: solid 2px var(--gris);
+  border-radius: 10px;
+  resize: none;
+  transition: 0.4s all ease-in-out;
+}
+
+.new-commentaire-text:hover {
+  height: 200px;
+}
+
+.new-commentaire-submit-button {
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: solid 1px var(--blanc);
+  color: var(--blanc);
+  background-color: var(--primary);
+  transition: 0.4s all ease-in-out;
+  cursor: pointer;
+}
+
+.new-commentaire-submit-button:hover {
+  border: solid 1px var(--primary);
+  color: var(--primary);
+  background-color: transparent;
+}
+
+.form-del-commentaire {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.del-commentaire-submit-button {
+  padding: 0.5rem 2rem;
+  border-radius: 50px;
+  color: var(--blanc);
+  background: var(--primary);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      PAGE DE LISTE D'ARTICLES (page.php)
+*/
+
+.article-list-title {
+  margin: 3rem 0 1rem 0;
+  font-size: 2.5rem;
+}
+
+.article-box {
+  width: 80vw;
+  margin-bottom: 2rem;
+  padding: 1rem 2rem;
+  border-left: solid #ffffff 10px;
+}
+
+.article-box:hover {
+  border-left: solid var(--primary) 10px;
+}
+
+.article-box-title {
+  font-size: 1.75rem;
+  margin: 0.5rem 0;
+}
+
+.article-box-lead {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.article-box-creator {
+  font-weight: 600;
+}
+
+.article-box-date {
+  margin: 0 1rem;
+}
+
+.article-box-description {
+  font-size: 0.95rem;
+  margin: 1rem 0;
+}
+
+.article-box-interactions {
+  font-size: 1.1rem;
+  margin: 1rem 0;
+}
+
+.page-switch-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin: 2rem 0;
+}
+
+.page-switch-container > * {
+  margin: 0 2rem;
+}
+
+.page-switch-text {
+  font-weight: 700;
+  padding: 1rem 3rem;
+  color: var(--page-switch-color-text-color);
+  transition: 0.4s all ease-in-out;
+}
+
+.page-switch-text:hover {
+  color: var(--page-switch-color-text-color-hover);
+  background-color: var(--page-switch-color-background-hover);
+  border-radius: 50px;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      PAGE DE CONNEXION (page.php)
+*/
+
+.main-auth {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-auth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  padding: 3rem;
+  background-color: rgb(6 2 43 / 85%);
+}
+
+.form-auth-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0 2rem 0;
+  color: white;
+}
+
+.form-auth-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  color: white;
+}
+
+.form-auth-label {
+  font-size: 1.5rem;
+}
+
+.form-auth-input {
+  width: 500px;
+  height: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 1.2rem;
+  border: solid 2px var(--gris);
+  border-radius: 10px;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      PAGE DE CRÉATION D'ARTICLE (createArticle.php)
+*/
+
+.main-create-article-container {
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10vw;
+}
+
+.form-create-article {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-create-article-title {
+  margin: 3rem 0 1rem 0;
+  font-size: 2.5rem;
+}
+
+.form-create-article-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+}
+
+.form-create-article-input {
+  width: 77vw;
+  height: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  border: solid 2px var(--gris);
+  border-radius: 10px;
+}
+
+.form-create-article-textarea {
+  width: 77vw;
+  height: 20rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  border: solid 2px var(--gris);
+  border-radius: 10px;
+  resize: none;
+}
+
+.form-create-article-submit-button {
+  width: inherit;
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: solid 1px var(--blanc);
+  color: var(--blanc);
+  background-color: var(--primary);
+  transition: 0.4s all ease-in-out;
+  cursor: pointer;
+}
+
+.create-article-submit-button:hover {
+  border: solid 1px var(--primary);
+  color: var(--primary);
+  background-color: transparent;
+}
