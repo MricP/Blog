@@ -1,16 +1,18 @@
     <?php 
-        require("../includes/header.php");
-        require("./function.php");
+        require_once('../utils/functions.php');
+        require_once("../includes/header.php");
+        require_once("./function.php");
+
         $categories = selectAllCategories();
 
-        if(!isset($_SESSION['currentUser'])) {
+        if(!isConnected()) {
             header("Location: ./auth.php?from=creationArticle.php");
         }
 
         if(isset($_POST['article-content'])) { 
             if(empty($_POST['article-content']) || strlen($_POST['article-content'])<=100) {
                 $errorMessage = "L'article doit comporter plus de 100 caractères.";
-                $_SESSION['lastActivity'] = time(); //On relance le timer pour repouser l'unset de $_SESSION['categories'];
+                $_SESSION['lastActivity'] = time(); //On relance le timer pour repousser l'unset de $_SESSION['categories'];
             } else {
                 $_SESSION['article-content'] = $_POST['article-content'];
             }   
@@ -19,17 +21,16 @@
         if(isset($_POST['article-title'])) {
             if(empty($_POST['article-title'])) {
                 $errorMessage = "L'article doit porter un titre.";
-                $_SESSION['lastActivity'] = time(); //On relance le timer pour repouser l'unset de $_SESSION['categories'];
+                $_SESSION['lastActivity'] = time(); //On relance le timer pour repousser l'unset de $_SESSION['categories'];
             } else {
                 $_SESSION['article-title'] = $_POST['article-title'];
             }
         }
 
-        
-
+        // Dans le cas ou les 2 variables POST on été complété
         if(isset($_SESSION['article-title'],$_SESSION['article-content']) && !empty($_SESSION['categories']) && !empty($_SESSION['article-title']) &&!empty($_SESSION['article-content'])){          
             createArticle();
-            header("Location: ./page.php");
+            header("Location: ./catalog.php?id=1");
             unset($_SESSION['article-title'],$_SESSION['article-content'],$_SESSION['categories']);
         }
 
@@ -46,7 +47,7 @@
             if (!in_array($_POST['selectedCategory'], $_SESSION['categories']) && isCategoryInDB($_POST['selectedCategory'], $errorMessage)) {
                 array_push($_SESSION['categories'], $_POST['selectedCategory']);
             }
-            $_SESSION['lastActivity'] = time(); //Timer pour la suppression d
+            $_SESSION['lastActivity'] = time(); //Timer pour la le reset de la page quand on la reload
         }
         $timeout_duration = 5;
 

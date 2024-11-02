@@ -1,15 +1,17 @@
 <?php
+    require_once('../utils/functions.php');
     require_once('../includes/header.php');   
-    require_once('./auth-functions.php');
 
+
+    // Pour la déconnexion
     if(isset($_GET['logout'])) {
         unset($_SESSION['currentUser']);
-        header("Location: ./page.php");
+        header("Location: ./catalog.php?id=1");
         exit();
     }
 
-    if(isset($_SESSION['currentUser'])){
-        header("Location: ./page.php");
+    if(isConnected()){
+        header("Location: ./catalog.php?id=1");
     }
 
     if(isset($_POST['email']) && !empty($_POST['email'])) {
@@ -39,10 +41,10 @@
         $_SESSION['displayPseudo'] = false;
     }
 
-    if(areIdentifiersCompleted() && areInputsVerified($errorMessage)) {
+    if(areIdentifiersCompleted() && areIdentifiersVerified($errorMessage)) {
         if(connectUser($errorMessage)) { // Si la connexion se passe bien, on redirige
             // Système de redirection en fonction de la page de provenance
-            isset($_GET['from']) ? header("Location: ".$_GET['from']) : header("Location: ./page.php");
+            isset($_GET['from']) ? header("Location: ".$_GET['from']) : header("Location: ./catalog.php?id=1");
         }
     }
 

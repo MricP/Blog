@@ -1,14 +1,14 @@
 <?php
-    require_once('../includes/header.php');
     require_once('./functions.php');
+    require_once('../includes/header.php');
 ?>
 
 <?php
     if(!isset($_SESSION['currentUser'])) {
         header("Location: ./auth.php?from=admin.php");
-    } else {
-        if($_SESSION['currentUser']['userType'] != 'admin') {
-            header("Location: ./page.php");
+    } else { // Si l'utilisateur tente d'acceder à la page admin sans etre admin, il est redirigé vers la 1ère page du catalogue
+        if(selectUser($_SESSION['currentUser'])[$GLOBALS['db']['tables']['USERS']['fields']['TYPE_USER']] != 'admin') {
+            header("Location: ./catalog.php?id=1");
         }
     }
 

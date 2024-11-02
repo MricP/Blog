@@ -42,8 +42,7 @@ $db = [
                 "PSEUDO" => "pseudo",
                 "EMAIL" => "email",
                 "PASSWORD" => "password",
-                "TYPE_USER" => "userType",
-                "IS_HASHED" => "is_hashed"
+                "TYPE_USER" => "userType"
             ]
         ],
         "ARTICLES" => [
@@ -105,130 +104,126 @@ function isConnected() {
 }
 
 function formatDate($date) {
-    $formatter = new IntlDateFormatter(
-        'fr_FR', // Paramètre régional (français)
-        IntlDateFormatter::LONG, // Longueur de la date (FULL pour inclure le jour complet)
-        IntlDateFormatter::NONE // Aucune partie pour l'heure
-    );
-    return $formatter->format(new DateTime($date));
+    $date_formatee = date("d/m/Y", strtotime($date)); // Date au format DD-MM-YYYY
+    echo $date_formatee;
 }
 
 /* 
 -------------    AUTHENTIFICATION    -------------------------------------------------------------------------------------------------------------
 */
 
-function existLastArticle() {
-    return isset($_SESSION['lastArticle']) && !empty($_SESSION['lastArticle']);
-}
+// function existLastArticle() {
+//     return isset($_SESSION['lastArticle']) && !empty($_SESSION['lastArticle']);
+// }
 
-function redirectWhenConnected() {
-    if (existLastArticle()) {
-        header("Location: ./article.php?id=".$_SESSION['lastArticle']);
-    } else {
-        header("Location: ./page.php?id=1");
-    }
-    exit();
-}
+// function redirectWhenConnected() {
+//     if (existLastArticle()) {
+//         header("Location: ./article.php?id=".$_SESSION['lastArticle']);
+//     } else {
+//         header("Location: ./page.php?id=1");
+//     }
+//     exit();
+// }
 
-function isPasswordValid($password) {
-    return strlen($password) < 8 || strlen($password)>30;
-}
+// function isPasswordValid($password) {
+//     return strlen($password) < 8 || strlen($password)>30;
+// }
 
-function verifyPasswordUser($user, $password) {
-    if ($user[$GLOBALS['db']['tables']['USERS']['fields']['IS_HASHED']] == 0) {
-        $result = $password == $user[$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']];
-        if ($result) {
-            updatePasswordToHash($user, $password);
-        }
-    } else {
-        $result = password_verify($password, $user[$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']]);
-    }
+// function verifyPasswordUser($user, $password) {
+//     if ($user[$GLOBALS['db']['tables']['USERS']['fields']['IS_HASHED']] == 0) {
+//         $result = $password == $user[$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']];
+//         if ($result) {
+//             updatePasswordToHash($user, $password);
+//         }
+//     } else {
+//         $result = password_verify($password, $user[$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']]);
+//     }
 
-    return $result;
-}
+//     return $result;
+// }
 
-function updatePasswordToHash($user, $password) {
+// function updatePasswordToHash($user, $password) {
+//     try {
+//         $connexion = getConnection();
+
+//         if (!isConnected()) {
+//             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+//             $sql = "UPDATE ".$GLOBALS['db']['tables']['USERS']['name']." SET ".$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']."=:password, ".$GLOBALS['db']['tables']['USERS']['fields']['IS_HASHED']."=1 WHERE ".$GLOBALS['db']['tables']['USERS']['fields']['ID']."=:id_user";
+//             $stmt = $connexion->prepare($sql);
+//             $stmt->bindParam(':password', $hashed_password);
+//             $stmt->bindParam(':id_user', $user[$GLOBALS['db']['tables']['USERS']['fields']['ID']]);
+//             $stmt->execute();
+//         } else {
+//             header("Location: ./auth.php");
+//         }
+//     } catch (PDOException $e) { 
+//         die('Erreur PDO : ' . $e->getMessage());
+//     } catch (Exception $e) {
+//         die('Erreur Générale : ' . $e->getMessage());
+//     }
+// }
+
+/* 
+-------------    AUTHENTIFICATION    -------------------------------------------------------------------------------------------------------------
+*/
+
+function connectUser(&$errorMessage) {
     try {
         $connexion = getConnection();
-
-        if (!isConnected()) {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            $sql = "UPDATE ".$GLOBALS['db']['tables']['USERS']['name']." SET ".$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']."=:password, ".$GLOBALS['db']['tables']['USERS']['fields']['IS_HASHED']."=1 WHERE ".$GLOBALS['db']['tables']['USERS']['fields']['ID']."=:id_user";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':password', $hashed_password);
-            $stmt->bindParam(':id_user', $user[$GLOBALS['db']['tables']['USERS']['fields']['ID']]);
-            $stmt->execute();
-        } else {
-            header("Location: ./auth.php");
-        }
-    } catch (PDOException $e) { 
-        die('Erreur PDO : ' . $e->getMessage());
-    } catch (Exception $e) {
-        die('Erreur Générale : ' . $e->getMessage());
-    }
-}
-
-/*-------------     AUTHENTIFICATION GENERALE     -------------*/
-
-function authUser($identifier, $password) {
-    if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
-        // L'utilisateur s'authentifie avec une adresse email
-        $user = selectUserByEmail($identifier);
-        if (empty($user)) {
-            // Si l'utilisateur n'existe pas dans la BDD, il doit renseigner son pseudo
-            createUser($identifier, NULL, $password);
-            connectUserByEmail($identifier, $password);
-            echo "NEW EMAIL";
-        } else {
-            // Si l'utilisateur existe, on vérifie que son mot de passe est valide
-            if (verifyPasswordUser($user, $password)) {
-                // Connexion réussie par email
-                connectUserByEmail($identifier, $password);
+        // Vérification si le pseudo existe déjà
+        $user = selectUserByEmail($_SESSION['email']);
+        if(empty($user)) { //Créer un compte
+            $_SESSION['displayPseudo']=true;
+            if(isPseudoCompleted()){
+                //L'insertion s'est bien passé, on redirige
+                if(insertUserToDB($errorMessage)) {
+                    $_SESSION['currentUser'] = selectUserByEmail($_SESSION['email'])['id_user'];
+                    unset($_SESSION['email']);
+                    unset($_SESSION['password']);
+                    unset($_SESSION['pseudo']);
+                    unset($_SESSION['displayPseudo']);
+                    unset($_SESSION['lastActivity']);
+                    return true;
+                }
+            }
+        } else { //Se connecter
+            if($user['password'] == hashPassword($_SESSION['password'])) {
+                $_SESSION['currentUser'] = $user['id_user'];
+                unset($_SESSION['email']);
+                unset($_SESSION['password']);
+                unset($_SESSION['pseudo']);
+                unset($_SESSION['displayPseudo']);
+                unset($_SESSION['lastActivity']);
+                return true;
             } else {
-                // Mot de passe invalide
-                $errorMessageAuth = "L'identifiant ou le mot de passe ne correspond pas";
+                $errorMessage = "Mot de passe incorrect.";
             }
         }
-    } else {
-        // L'utilisateur s'authentifie avec un pseudo
-        $user = selectUserByPseudo($identifier);
-        if (empty($user)) {
-            // Si l'utilisateur n'existe pas dans la BDD, le compte est créé
-            createUser(NULL, $identifier, $password);
-            connectUserByPseudo($identifier, $password);
-        } else {
-            // Si l'utilisateur existe, on vérifie que son mot de passe est valide
-            if (verifyPasswordUser($user, $password)) {
-                // Connexion réussie par pseudo
-                connectUserByPseudo($identifier, $password);
-            } else {
-                // Mot de passe invalide
-                $errorMessageAuth = "L'identifiant ou le mot de passe ne correspond pas";
-            }
-        }
-    }
-    if (isConnected()) {
-        redirectWhenConnected();
+        return false;
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
     }
 }
 
-/*-------------     CONNEXION     -------------*/
-
-function connectUserByPseudo($pseudo, $password) {
+function insertUser(&$errorMessage) {
     try {
         $connexion = getConnection();
 
-        if (!isConnected()) {
-            $sql = "SELECT * FROM ".$GLOBALS['db']['tables']['USERS']['name']." WHERE ".$GLOBALS['db']['tables']['USERS']['fields']['PSEUDO']."=:pseudo";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':pseudo', $pseudo);
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            $_SESSION['currentUser'] = $user[$GLOBALS['db']['tables']['USERS']['fields']['ID']];
-
+        if(!empty(selectUserByPseudo($_SESSION['pseudo']))) {
+            $errorMessage = "Ce pseudo est déjà emprunté.";
+            return false;
         } else {
-            header("Location: ./page.php?id=1");
+            // Insérer le nouvel utilisateur
+            $sql = "INSERT INTO ".$GLOBALS['db']['tables']['USERS']['name']."(".$GLOBALS['db']['tables']['USERS']['fields']['PSEUDO'].", ".$GLOBALS['db']['tables']['USERS']['fields']['EMAIL'].", ".$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD'].") VALUES (:pseudo, :email, :password)";
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(':pseudo', $_SESSION['pseudo']);
+            $stmt->bindParam(':password', hashPassword($_SESSION['password']));
+            $stmt->bindParam(':email', $_SESSION['email']);
+            $stmt->execute();
+            return true;
         }
     } catch (PDOException $e) { 
         die('Erreur PDO : ' . $e->getMessage());
@@ -237,26 +232,39 @@ function connectUserByPseudo($pseudo, $password) {
     }
 }
 
-function connectUserByEmail($email, $password) {
-    try {
-        $connexion = getConnection();
+function hashPassword($password) {
+    // sha256 permet d'avoir le même hashage pour des chaînes identiques
+    return hash('sha256', $password);
+}
 
-        if (!isConnected()) {
-            $sql = "SELECT * FROM ".$GLOBALS['db']['tables']['USERS']['name']." WHERE ".$GLOBALS['db']['tables']['USERS']['fields']['EMAIL']."=:email";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            $_SESSION['currentUser'] = $user[$GLOBALS['db']['tables']['USERS']['fields']['ID']];
+function areIdentifiersCompleted() {
+    //Vérifie si l'email et le password ont bien été renseigné
+    return isset($_SESSION['email'],$_SESSION['password']);
+}
 
-        } else {
-            header("Location: ./page.php?id=1");
+function isPseudoCompleted(){
+    //Vérifie si le pseudo a bien été renseigné
+    return isset($_SESSION['pseudo']);
+}
+
+function areIdentifiersVerified(&$errorMessage) {
+    $email = $_SESSION['email'];
+    $password = $_SESSION['password'];
+
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) { //Couvre la connexion et la création
+        $errorMessage = "L'adresse email n'a pas un format valide.";
+        return false;
+    } elseif(strlen($password) < 6 || strlen($password)>30) { //Couvre la connexion et la création
+        $errorMessage = "Votre mot de passe doit comporter 6 à 15 caractères.";
+        return false;
+    } elseif(isPseudoCompleted()){
+        //Si on est dans la phase de création (qu'un pseudo est entré)
+        if(strlen($_SESSION['pseudo'])<4 || strlen($_SESSION['pseudo'])>64) { 
+            $errorMessage = "Votre pseudo doit comporter 4 à 15 caractères.";
+            return false;
         }
-    } catch (PDOException $e) { 
-        die('Erreur PDO : ' . $e->getMessage());
-    } catch (Exception $e) {
-        die('Erreur Générale : ' . $e->getMessage());
     }
+    return true;
 }
 
 /* 
@@ -315,29 +323,6 @@ function selectUserByPseudo($pseudo) {
         die('Erreur Générale : ' . $e->getMessage());
     }
     return $user;
-}
-
-function createUser($email, $pseudo, $password) {
-    try {
-        $connexion = getConnection();
-
-        if (!isConnected()) {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            $sql = "INSERT INTO ".$GLOBALS['db']['tables']['USERS']['name']."(".$GLOBALS['db']['tables']['USERS']['fields']['PSEUDO'].", ".$GLOBALS['db']['tables']['USERS']['fields']['EMAIL'].", ".$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD'].", ".$GLOBALS['db']['tables']['USERS']['fields']['IS_HASHED'].") VALUES (:pseudo, :email, :password, 1)";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':pseudo', $pseudo);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $hashed_password);
-            $stmt->execute();
-        } else {
-            header("Location: ./auth.php");
-        }
-    } catch (PDOException $e) { 
-        die('Erreur PDO : ' . $e->getMessage());
-    } catch (Exception $e) {
-        die('Erreur Générale : ' . $e->getMessage());
-    }
 }
 
 /* 
@@ -647,6 +632,7 @@ function selectTotalCategories() {
     $total_categories = $result["total_categories"];
     return $total_categories;
 }
+
 /* 
 -------------    ARTICLES_CATEGORIES    -------------------------------------------------------------------------------------------------------------
 */
