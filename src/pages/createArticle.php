@@ -1,7 +1,7 @@
     <?php 
         require_once('../utils/functions.php');
         require_once("../includes/header.php");
-        require_once("./function.php");
+        // require_once("./function.php");
 
         $categories = selectAllCategories();
 
@@ -27,11 +27,23 @@
             }
         }
 
-        // Dans le cas ou les 2 variables POST on été complété
-        if(isset($_SESSION['article-title'],$_SESSION['article-content']) && !empty($_SESSION['categories']) && !empty($_SESSION['article-title']) &&!empty($_SESSION['article-content'])){          
-            createArticle();
-            header("Location: ./catalog.php?id=1");
-            unset($_SESSION['article-title'],$_SESSION['article-content'],$_SESSION['categories']);
+        // Dans le cas ou les 2 variables POST on été complétée
+        if(isset($_SESSION['article-title'],$_SESSION['article-content']) && !empty($_SESSION['article-title']) &&!empty($_SESSION['article-content'])){  
+            if(!empty($_SESSION['categories'])) {
+                /*
+                    Dernière action à effectuer, elle permet à l'utilisateur de continuer d'ajouter des categories à sont 
+                    article sans risqué qu'il soit posté au moment ou l'utilisateur clique sur entrer
+                */
+                if(isConsentCheckBoxChecked()) {
+                    createArticle();
+                    header("Location: ./catalog.php?id=1");
+                    unset($_SESSION['article-title'],$_SESSION['article-content'],$_SESSION['categories']);
+                } else {
+                    $errorMessage = "Veuillez consentir à poster un contenu sérieux et approprié";
+                }
+            } else {
+                $errorMessage = "Selectionnez au moins une catégorie en lien avec votre post.";
+            }
         }
 
         if(!empty($_POST['deleteCategory'])) {
@@ -54,6 +66,8 @@
         if (sizeof($_SESSION['categories']) != 0 && isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
             unset($_SESSION['categories']);
         }
+
+        
     ?>
 
     <datalist id='categories-list'>
@@ -115,24 +129,21 @@
 
             <div class="formContent-container">
                 <label for="article-content">Contenu de l'article*</label>
-                <textarea id="textarea" class="article-content" name="article-content" maxlength='4000' oninput="updateCharacterCount()"><?php if(isset($_POST['article-content'])) echo $_POST['article-content']?></textarea>
+                <textarea id="textarea" class="article-content" name="article-content" maxlength='4000' oninput="updateCharacterCount(4000)"><?php if(isset($_POST['article-content'])) echo $_POST['article-content']?></textarea>
                 <div id="characterCount"></div>
             </div> 
 
+            <label class="label-consent">
+                <input type="checkbox" class="consentCheckbox" name="consent"/>
+                Je m'engage à poster un contenu sérieux et approprié.
+            </label>
             <button type="submit" class="creationArticle-button">Valider</button>
         </form>
     </main>
     <script>
-        function updateCharacterCount() {
-            const textarea = document.getElementById('textarea');
-            const characterCount = document.getElementById('characterCount');
-            const count = textarea.value.length; // Obtient le nombre de caractères
-            characterCount.textContent = `${count} / 4000`; // Met à jour le texte
-        }
-
-        // Appel de la fonction pour mettre à jour le compteur au chargement de la page
+    // Appel de la fonction pour mettre à jour le compteur au chargement de la page
         window.onload = function() {
-            updateCharacterCount(); // Met à jour le compteur dès le chargement
+            updateCharacterCount(4000); // Met à jour le compteur dès le chargement
         };
     </script>
     

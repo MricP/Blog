@@ -18,12 +18,10 @@
     --navbar-option-text-color-hover: var(--blanc);
     --navbar-option-background-color-hover: var(--primary);
 
-    --del-article-submit-button-text-color: var(--blanc);
-    --del-article-submit-button-text-color-hover: var(--primary);
-    --del-article-submit-button-background-color: var(--primary);
-    --del-article-submit-button-background-color-hover: transparent;
-    --del-article-submit-button-border-color: var(--blanc);
-    --del-article-submit-button-border-color-hover: var(--primary);
+    --button-text-color:var(--primary);
+    --button-text-color-hover:var(--blanc);
+    --button-bg-color:transparent;
+    --button-bg-color-hover:var(--primary);
 
     /* Bouton de Pagination (Précédent/Suivant)*/
     --page-switch-color-text-color: var(--primary);
@@ -80,7 +78,6 @@ body {
 
 
 main {
-    /* background-color: blue; */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -130,6 +127,10 @@ input, textarea {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid black;
+}
+
+textarea {
+    resize: none;
 }
 
 a {
@@ -228,7 +229,7 @@ header li:last-child a {
     height: 5px;
     background-color: var(--section-separator-color);
     border-radius: 10px;
-    margin: 0 10vw;
+    margin: 3rem 0 3rem 0;
 }
 
 .pastilles-container {
@@ -237,7 +238,6 @@ header li:last-child a {
 }
 
 .pastille-category {
-    background-color: red;
     width: fit-content;
     font-weight: 600;
     padding: 1rem 2rem;
@@ -282,137 +282,127 @@ header li:last-child a {
 
 /* ################## PAGE ARTICLE ################## */
 
-.article-container {
-  margin: 2rem 10vw;
-}
-  
-.article-container > h1 {
-  margin: 0 0 1.5rem 0;
+.article-main {
+    width: 90%;
 }
 
-.article-text {
-  width: 80vw;
-  font-size: 1.2rem;
-  margin: 1rem 0;
+.article-container>div:first-of-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 1rem 0 1rem 0;
+    width: 100%;
+}
+
+.article-container>div:first-of-type h1{
+    margin: 0;
+    width: 80%;
 }
 
 .form-del-article {
-  width: 80vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem 10vw;
+    margin: 0;
+    width: 20%;
 }
 
 .del-article-submit-button {
-  font-weight: 600;
-  font-size: 1.2rem;
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  color: var(--del-article-submit-button-text-color);
-  background-color: var(--del-article-submit-button-background-color);
-  border: solid 1px var(--del-article-submit-button-border-color);
-  transition: 0.4s all ease-in-out;
-  cursor: pointer;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    font-size: 1.1rem;
 }
 
-.del-article-submit-button:hover {
-  color: var(--del-article-submit-button-text-color-hover);
-  background-color: var(--del-article-submit-button-background-color-hover);
-  border: solid 1px var(--del-article-submit-button-border-color-hover);
-}
-
-.commentaires-container {
-  margin: 4rem 10vw;
-}
-
-.commentaire-box {
-  width: 69%;
-  margin-bottom: 2rem;
-  padding: 1rem 1rem;
-  border-left: solid 5px var(--primary);
-}
-
-.commentaire-text {
-  margin: 1rem 0;
-  transition: 0.4s all ease-in-out;
-}
-
-.commentaire-text:hover {
-  font-size: 1.08rem;
+.article-text {
+    width: 80vw;
+    font-size: 1.2rem;
+    margin: 2rem 0 1rem 0 ;
+    text-align: justify;
 }
 
 .article-creator {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 2rem 0 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem 0;
 }
 
-.article-date {
-}
-
-.commentaire-author {
-  font-weight: 600;
+.commentaires-container h2 {
+    margin: 1.1rem 0;
 }
 
 .form-new-commentaire {
-  width: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.new-commentaire-label {
-  margin: 1rem 0;
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1rem;
 }
 
 .new-commentaire-text {
-  width: 70vw;
-  height: 50px;
-  padding: 1rem;
-  margin: 1rem 0;
-  font-size: 1.2rem;
-  border: solid 2px var(--gris);
-  border-radius: 10px;
-  resize: none;
-  transition: 0.4s all ease-in-out;
+    width: 69%;
+    height: 100px;
+    transition: all ease 0.4s;
+}
+
+.new-commentaire-label {
+    margin: 0;
 }
 
 .new-commentaire-text:hover {
-  height: 200px;
+    height: 200px;
 }
 
 .new-commentaire-submit-button {
-  font-weight: 600;
-  font-size: 1.2rem;
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  border: solid 1px var(--blanc);
-  color: var(--blanc);
-  background-color: var(--primary);
-  transition: 0.4s all ease-in-out;
-  cursor: pointer;
+    width: 70%;
 }
 
-.new-commentaire-submit-button:hover {
-  border: solid 1px var(--primary);
-  color: var(--primary);
-  background-color: transparent;
+.commentaire-box {
+    width: 68%;
+    margin-bottom: 2rem;
+    padding: 1rem 1%;
+    border-left: solid 5px var(--primary);
+}
+
+.commentaire-box div {
+    background-color: green;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.commentaire-author {
+    width: 70%;
+    font-weight: 600;
+    height: auto;
 }
 
 .form-del-commentaire {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
 }
 
-.del-commentaire-submit-button {
+.form-del-commentaire button {
+    height: auto;
+    padding: 5px;
+    margin: 0;
+}
+
+.commentaire-text {
+    width: 100%;
+    margin: 1rem 0;
+    transition: 0.4s all ease-in-out;
+}
+
+.commentaire-text:hover {
+    font-size: 1.08rem;
+}
+
+
+
+/* .del-commentaire-submit-button {
   padding: 0.5rem 2rem;
   border-radius: 50px;
   color: var(--blanc);
   background: var(--primary);
   cursor: pointer;
-}
+} */
 
 
 /* ################## PAGE LISTE ARTICLE / ACCUEIL ################## */
@@ -454,8 +444,9 @@ header li:last-child a {
 }
 
 .article-box-description {
-  font-size: 0.95rem;
-  margin: 1rem 0;
+    text-align: justify;
+    font-size: 0.95rem;
+    margin: 1rem 0;
 }
 
 .article-box-interactions {
@@ -786,6 +777,11 @@ datalist{
 .creationPage-container{
     width: 70%;
     height: 70%;
+}
+
+.label-consent {
+    display: flex;
+    gap: 5px;
 }
 
 .creationArticle-button{

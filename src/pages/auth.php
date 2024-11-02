@@ -24,17 +24,17 @@
         
     if(isset($_POST['pseudo']) && !empty($_POST['pseudo'])) {
         $_SESSION['pseudo'] = $_POST['pseudo'];
+        $_SESSION['lastActivity'] = time();
     }
 
-    $timeout_duration = 10;
-    // Expiration de la création de compte au bout de 10s sans tenter de rentrer un pseudo
+    $timeout_duration = 1;
+    // Expiration de la création de compte au bout de si la page est reload
     if (isset($_SESSION['lastActivity']) && !empty($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
         unset($_SESSION['email']);
         unset($_SESSION['password']);
         unset($_SESSION['pseudo']);
         unset($_SESSION['displayPseudo']);
         unset($_SESSION['lastActivity']);
-        $errorMessage = "Processus d'inscription expiré.";
     }
     
     if(!isset($_SESSION['displayPseudo'])) {
@@ -47,8 +47,6 @@
             isset($_GET['from']) ? header("Location: ".$_GET['from']) : header("Location: ./catalog.php?id=1");
         }
     }
-
-    /* TODO : créer un compte, créer un autre, se connecter avec le premier : BUG ICI*/ 
 ?>    
     <main>
         <h1>Page de connexion</h1>

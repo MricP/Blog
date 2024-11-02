@@ -108,61 +108,14 @@ function formatDate($date) {
     echo $date_formatee;
 }
 
+
 /* 
--------------    AUTHENTIFICATION    -------------------------------------------------------------------------------------------------------------
+-------------    CREATION ARTICLE    -------------------------------------------------------------------------------------------------------------
 */
 
-// function existLastArticle() {
-//     return isset($_SESSION['lastArticle']) && !empty($_SESSION['lastArticle']);
-// }
-
-// function redirectWhenConnected() {
-//     if (existLastArticle()) {
-//         header("Location: ./article.php?id=".$_SESSION['lastArticle']);
-//     } else {
-//         header("Location: ./page.php?id=1");
-//     }
-//     exit();
-// }
-
-// function isPasswordValid($password) {
-//     return strlen($password) < 8 || strlen($password)>30;
-// }
-
-// function verifyPasswordUser($user, $password) {
-//     if ($user[$GLOBALS['db']['tables']['USERS']['fields']['IS_HASHED']] == 0) {
-//         $result = $password == $user[$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']];
-//         if ($result) {
-//             updatePasswordToHash($user, $password);
-//         }
-//     } else {
-//         $result = password_verify($password, $user[$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']]);
-//     }
-
-//     return $result;
-// }
-
-// function updatePasswordToHash($user, $password) {
-//     try {
-//         $connexion = getConnection();
-
-//         if (!isConnected()) {
-//             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-//             $sql = "UPDATE ".$GLOBALS['db']['tables']['USERS']['name']." SET ".$GLOBALS['db']['tables']['USERS']['fields']['PASSWORD']."=:password, ".$GLOBALS['db']['tables']['USERS']['fields']['IS_HASHED']."=1 WHERE ".$GLOBALS['db']['tables']['USERS']['fields']['ID']."=:id_user";
-//             $stmt = $connexion->prepare($sql);
-//             $stmt->bindParam(':password', $hashed_password);
-//             $stmt->bindParam(':id_user', $user[$GLOBALS['db']['tables']['USERS']['fields']['ID']]);
-//             $stmt->execute();
-//         } else {
-//             header("Location: ./auth.php");
-//         }
-//     } catch (PDOException $e) { 
-//         die('Erreur PDO : ' . $e->getMessage());
-//     } catch (Exception $e) {
-//         die('Erreur Générale : ' . $e->getMessage());
-//     }
-// }
+function isConsentCheckBoxChecked() {
+    return isset($_POST['consent']);
+}
 
 /* 
 -------------    AUTHENTIFICATION    -------------------------------------------------------------------------------------------------------------
@@ -177,7 +130,7 @@ function connectUser(&$errorMessage) {
             $_SESSION['displayPseudo']=true;
             if(isPseudoCompleted()){
                 //L'insertion s'est bien passé, on redirige
-                if(insertUserToDB($errorMessage)) {
+                if(insertUser($errorMessage)) {
                     $_SESSION['currentUser'] = selectUserByEmail($_SESSION['email'])['id_user'];
                     unset($_SESSION['email']);
                     unset($_SESSION['password']);
@@ -518,8 +471,7 @@ function selectTotalArticlesByPseudoExact($pseudo) {
 
 function createArticle() {
     try {
-        $connexion = new PDO("mysql:host=".$GLOBALS['db']['host'].";dbname=".$GLOBALS['db']['name'].";charset=utf8", 'root', '');
-        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $connexion = getConnection();
 
         if (isConnected()) {
             if(!empty($_SESSION['article-title']) && !empty($_SESSION['article-content']) && !empty($_SESSION['categories'])){
@@ -580,10 +532,17 @@ function deleteArticle() {
         $connexion = getConnection();
 
         if (isConnected()) {
-            $sql = "DELETE FROM ".$GLOBALS['db']['tables']['ARTICLES']['name']." WHERE ".$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']."=:id_article AND ".$GLOBALS['db']['tables']['ARTICLES']['fields']['AUTHOR']."=:id_author";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':id_article', $_SESSION['lastArticle']);
-            $stmt->bindParam(':id_author', $_SESSION['currentUser']);
+            // Si c'est un admin
+            if(selectUser($_SESSION['currentUser'])[$GLOBALS['db']['tables']['USERS']['fields']['TYPE_USER']] == "admin") {
+                $sql = "DELETE FROM ".$GLOBALS['db']['tables']['ARTICLES']['name']." WHERE ".$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']."=:id_article";
+                $stmt = $connexion->prepare($sql);
+                $stmt->bindParam(':id_article', $_SESSION['lastArticle']);
+            } else { // Si c'est l'auteur
+                $sql = "DELETE FROM ".$GLOBALS['db']['tables']['ARTICLES']['name']." WHERE ".$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']."=:id_article AND ".$GLOBALS['db']['tables']['ARTICLES']['fields']['AUTHOR']."=:id_author";
+                $stmt = $connexion->prepare($sql);
+                $stmt->bindParam(':id_article', $_SESSION['lastArticle']);
+                $stmt->bindParam(':id_author', $_SESSION['currentUser']);
+            }
             $stmt->execute();
         } else {
             echo "Pas de currentUser";
@@ -593,6 +552,23 @@ function deleteArticle() {
     } catch (Exception $e) {
         die('Erreur Générale : ' . $e->getMessage());
     }
+}
+
+function selectLastArticle() {
+    try {
+        $connexion = getConnection();
+
+        $sql = "SELECT * FROM ".$GLOBALS['db']['tables']['ARTICLES']['name']." ORDER BY ".$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']." DESC LIMIT 1";
+        $stmt = $connexion->prepare($sql);
+        $stmt->execute();
+        $article = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
+    return $article;
 }
 
 /* 
@@ -633,6 +609,30 @@ function selectTotalCategories() {
     return $total_categories;
 }
 
+function isCategoryInDB($category,&$errorMessage) {
+    try {
+        $connexion = getConnection();
+
+        $sql = "SELECT COUNT(*) FROM ".$GLOBALS['db']['tables']['CATEGORIES']['name']." WHERE ".$GLOBALS['db']['tables']['CATEGORIES']['fields']['NAME']." = :category";
+        $stmt = $connexion->prepare($sql);
+        $stmt->bindParam(':category', $category);
+        $stmt->execute();
+        
+        $count = $stmt->fetchColumn();
+
+        if ($count == 0) {
+            $errorMessage = "La catégorie sélectionnée n'existe pas.";
+            return false;
+        }
+        return true;
+
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
+}
+
 /* 
 -------------    ARTICLES_CATEGORIES    -------------------------------------------------------------------------------------------------------------
 */
@@ -662,17 +662,14 @@ function selectCategories($id_article) {
 function createComment($comment_text) {
     try {
         $connexion = getConnection();
-
-        if (isConnected()) {
-            $sql = "INSERT INTO ".$GLOBALS['db']['tables']['COMMENTS']['name']."(".$GLOBALS['db']['tables']['COMMENTS']['fields']['AUTHOR'].", ".$GLOBALS['db']['tables']['COMMENTS']['fields']['ARTICLE'].", ".$GLOBALS['db']['tables']['COMMENTS']['fields']['TEXT'].") VALUES (:id_author, :id_article, :text)";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':id_author', $_SESSION['currentUser']);
-            $stmt->bindParam(':id_article', $_SESSION['lastArticle']);
-            $stmt->bindParam(':text', $comment_text);
-            $stmt->execute();
-        } else {
-            header("Location: ./auth.php");
-        }
+        
+        $sql = "INSERT INTO ".$GLOBALS['db']['tables']['COMMENTS']['name']."(".$GLOBALS['db']['tables']['COMMENTS']['fields']['AUTHOR'].", ".$GLOBALS['db']['tables']['COMMENTS']['fields']['ARTICLE'].", ".$GLOBALS['db']['tables']['COMMENTS']['fields']['TEXT'].") VALUES (:id_author, :id_article, :text)";
+        $stmt = $connexion->prepare($sql);
+        $stmt->bindParam(':id_author', $_SESSION['currentUser']);
+        $stmt->bindParam(':id_article', $_SESSION['lastArticle']);
+        $stmt->bindParam(':text', $comment_text);
+        $stmt->execute();
+        
     } catch (PDOException $e) { 
         die('Erreur PDO : ' . $e->getMessage());
     } catch (Exception $e) {
@@ -737,10 +734,17 @@ function deleteComment() {
         $connexion = getConnection();
 
         if (isConnected()) {
-            $sql = "DELETE FROM ".$GLOBALS['db']['tables']['COMMENTS']['name']." WHERE ".$GLOBALS['db']['tables']['COMMENTS']['fields']['ID']."=:id_comment AND ".$GLOBALS['db']['tables']['COMMENTS']['fields']['AUTHOR']."=:id_author";
-            $stmt = $connexion->prepare($sql);
-            $stmt->bindParam(':id_comment', $_POST['id_comment']);
-            $stmt->bindParam(':id_author', $_SESSION['currentUser']);
+            // Si c'est un admin
+            if(selectUser($_SESSION['currentUser'])[$GLOBALS['db']['tables']['USERS']['fields']['TYPE_USER']] == "admin") {
+                $sql = "DELETE FROM ".$GLOBALS['db']['tables']['COMMENTS']['name']." WHERE ".$GLOBALS['db']['tables']['COMMENTS']['fields']['ID']."=:id_comment";
+                $stmt = $connexion->prepare($sql);
+                $stmt->bindParam(':id_comment', $_POST['id_comment']);
+            } else { // Si c'est l'auteur
+                $sql = "DELETE FROM ".$GLOBALS['db']['tables']['COMMENTS']['name']." WHERE ".$GLOBALS['db']['tables']['COMMENTS']['fields']['ID']."=:id_comment AND ".$GLOBALS['db']['tables']['COMMENTS']['fields']['AUTHOR']."=:id_author";
+                $stmt = $connexion->prepare($sql);
+                $stmt->bindParam(':id_comment', $_POST['id_comment']);
+                $stmt->bindParam(':id_author', $_SESSION['currentUser']);
+            }
             $stmt->execute();
         } else {
             echo "Pas de currentUser";

@@ -34,11 +34,16 @@
             unset($_SESSION['commentText']);
         }
         if (existComment()) {
+            echo "ici";
             /*
             L'utilisateur connecté souhaite créer un nouveau commentaire.
             On utilise uniquement la méthode POST sans créer de variable de session.
             */
             createComment($_POST["commentText"]);
+
+            // Pour éviter que le commentaire soit reposté si je raffraichit la page
+            header("Location: ./article.php?id=".$_GET['id']); 
+            exit();
         }
     } else {
     // Si l'utilisateur n'est pas connecté
@@ -46,7 +51,7 @@
             // On sauvegarde son commentaire dans une variable de session
             $_SESSION['commentText'] = $_POST['commentText'];
             // Puis on le redirige vers la page d'authentification
-            header("Location: auth.php");
+            header("Location: ./auth.php?from=article.php?id=".$_GET['id']);
             exit();
         }
     }
@@ -58,9 +63,18 @@
     $previousArticle = selectPreviousArticle($_SESSION['lastArticle']);
     $nextArticle = selectNextArticle($_SESSION['lastArticle']);
 ?>
-    <main>
+    <main class="article-main">
         <div class="article-container">
-            <h1><?php echo $article['title'] ; ?></h1>
+            <div>
+                <h1><?php echo $article['title'] ; ?></h1>
+                <form class="form-del-article" action="../redirect/articleDeleted.php" method="POST">
+                    <?php if (isConnected()) {
+                            if($_SESSION["currentUser"] == $article[$GLOBALS['db']['tables']['ARTICLES']['fields']['AUTHOR']]
+                                || selectUser($_SESSION['currentUser'])[$GLOBALS['db']['tables']['USERS']['fields']['TYPE_USER']] == "admin") {?>
+                        <button type="submit" class="del-article-submit-button">Supprimer l'article</button>
+                    <?php }}?>
+                </form>
+            </div>
             <div class="pastilles-container">
                 <?php 
                     for ($i = 0; $i < sizeof($categories); $i++) {
@@ -68,33 +82,28 @@
                     }
                 ?>
             </div>
-            <p class="article-text"><?php echo $article[$GLOBALS['db']['tables']['ARTICLES']['fields']['TEXT']]?></p>
+            <!--nl2br(htmlspecialchars()) => permet de prendre en compte les retours à la ligne 
+                tout en empechant l'execution de code HTML ou JS présent dans le texte -->
+            <p class="article-text"><?php echo nl2br(htmlspecialchars($article[$GLOBALS['db']['tables']['ARTICLES']['fields']['TEXT']]))?></p>
             <p class="article-creator"><?php echo $creator[$GLOBALS['db']['tables']['USERS']['fields']['PSEUDO']]; ?></p>
             <p class="article-date">
-                Crée le <?php echo formatDate($article[$GLOBALS['db']['tables']['ARTICLES']['fields']['DATE']]); ?>
+                Posté le <?php echo formatDate($article[$GLOBALS['db']['tables']['ARTICLES']['fields']['DATE']]); ?>
             </p>
         </div>
-        <form class="form-del-article" action="./redirect/articleDeleted.php" method="POST">
-            <?php if (isset($_SESSION["currentUser"]) && $_SESSION["currentUser"] == $article[$GLOBALS['db']['tables']['ARTICLES']['fields']['AUTHOR']]) {?>
-                <button type="submit" class="del-article-submit-button">Supprimer l'article</button>
-            <?php }?>
-        </form>
         <div class="section-separator"></div>
         <div class="commentaires-container">
-            <h2>Commentaires</h2>
             <form class="form-new-commentaire" method="POST">
-                <label class="new-commentaire-label" for="commentText">Votre commentaire</label>
-                <textarea class="new-commentaire-text" name="commentText"><?php echo (isset($commentText) && !empty($commentText) ? $commentText : "" ) ?></textarea>
-                
+                <label class="new-commentaire-label" for="commentText"><h2>Poster un commentaire</h2></label>
+                <textarea id="textarea" class="new-commentaire-text" oninput="updateCharacterCount(1000)" maxlength='1000' name="commentText"><?php echo (isset($commentText) && !empty($commentText) ? $commentText : "" ) ?></textarea>
+                <div id="characterCount"></div>
                 <button type="submit" class="new-commentaire-submit-button"><?php echo (empty($_SESSION["currentUser"]) ? "Se connecter" : "Envoyer le commentaire"); ?></button>
             </form>
+            <div class="section-separator"></div>
+            <h2>Commentaires</h2>
             <?php 
                 for ($i = 0; $i < sizeof($comments); $i++) {
                     require "../components/comment-box.php";
                 }
-            ?>
-            <?php 
-            
             ?>
         </div>
         <div class="section-separator"></div>
@@ -111,6 +120,12 @@
             <?php } ?>
         </div>
     </main>
+    <script>
+    // Appel de la fonction pour mettre à jour le compteur au chargement de la page
+        window.onload = function() {
+            updateCharacterCount(1000); // Met à jour le compteur dès le chargement
+        };
+    </script>
 <?php
     require_once('../includes/footer.php');
 ?>
