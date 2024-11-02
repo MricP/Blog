@@ -44,11 +44,13 @@
 ?>
     <main>
         <h1 class="article-list-title">Page <?php echo $_GET['id']?> - Articles de <?php echo $minIndexArticle ?> à <?php echo $maxIndexArticle?></h1>
-        <form method="GET">
-            <label for="filter_user">Filtrer par utilisateur</label>
-            <input type="text" name="filter_user">
-            <label for="exactPseudo">Pseudo exact ?</label>
-            <input type="checkbox" name="exact_pseudo">
+        <form class="filter-form" method="GET">
+            <label for="filter_user">Filtrer par utilisateur
+                <input type="text" name="filter_user">
+            </label>
+            <label for="exactPseudo">Pseudo exact ?
+                <input type="checkbox" name="exact_pseudo">
+            </label>
             <input type="hidden" name="id" value="1">
         </form>
         <div class="article-list-container">

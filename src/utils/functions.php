@@ -108,8 +108,7 @@ function formatDate($date) {
     echo $date_formatee;
 }
 
-
-/* 
+/*
 -------------    CREATION ARTICLE    -------------------------------------------------------------------------------------------------------------
 */
 
@@ -572,6 +571,92 @@ function selectLastArticle() {
 }
 
 /* 
+-------------    LIKES    -------------------------------------------------------------------------------------------------------------
+*/
+
+function isLiked($articleId) {
+    try {
+        $connexion = getConnection();
+        
+        if(isConnected()) {
+            $sql = "SELECT count(*) FROM ".$GLOBALS['db']['tables']['LIKES']['name']." WHERE ".$GLOBALS['db']['tables']['LIKES']['fields']['AUTHOR']." = :author_id AND ".$GLOBALS['db']['tables']['LIKES']['fields']['ARTICLE']." = :article_id";
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(':article_id', $articleId);
+            $stmt->bindParam(':author_id', $_SESSION['currentUser']);
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+
+            return $count > 0;
+        }
+        return false;
+
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
+}
+
+function likeArticle($articleId) {
+    try {
+        $connexion = getConnection();
+
+        if(isConnected()) {
+            
+            $sql = "INSERT INTO ".$GLOBALS['db']['tables']['LIKES']['name']." (".$GLOBALS['db']['tables']['LIKES']['fields']['ARTICLE'].", ".$GLOBALS['db']['tables']['LIKES']['fields']['AUTHOR'].") VALUES (:article_id, :author_id)";        
+            echo $sql;
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(':article_id', $articleId);
+            $stmt->bindParam(':author_id', $_SESSION['currentUser']);
+            $stmt->execute();
+        }
+        
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
+}
+
+function unlikeArticle($articleId) {
+    try {
+        $connexion = getConnection();
+
+        if(isConnected()) {
+            $sql = "DELETE FROM ".$GLOBALS['db']['tables']['LIKES']['name']." WHERE ".$GLOBALS['db']['tables']['LIKES']['fields']['AUTHOR']." = :author_id AND ".$GLOBALS['db']['tables']['LIKES']['fields']['ARTICLE']." = :article_id";     
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(':article_id', $articleId);
+            $stmt->bindParam(':author_id', $_SESSION['currentUser']);
+            $stmt->execute();
+        }
+        
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
+}
+
+function selectNumberOfLikes($articleId) {
+    try {
+        $connexion = getConnection();
+
+        $sql = "SELECT COUNT(*) AS nb_likes FROM ".$GLOBALS['db']['tables']['LIKES']['name']." WHERE ".$GLOBALS['db']['tables']['LIKES']['fields']['ARTICLE']."=:id_article";
+        $stmt = $connexion->prepare($sql);
+        $stmt->bindParam(':id_article', $articleId);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) { 
+        die('Erreur PDO : ' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Erreur Générale : ' . $e->getMessage());
+    }
+    $nb_likes = $result["nb_likes"];
+    return $nb_likes;
+}
+
+
+/* 
 -------------    CATEGORIES    -------------------------------------------------------------------------------------------------------------
 */
 
@@ -754,43 +839,4 @@ function deleteComment() {
     } catch (Exception $e) {
         die('Erreur Générale : ' . $e->getMessage());
     }
-}
-
-/* 
--------------    LIKES    -------------------------------------------------------------------------------------------------------------
-*/
-
-function selectNumberOfLikes($id_article) {
-    try {
-        $connexion = getConnection();
-
-        $sql = "SELECT COUNT(*) AS nb_likes FROM ".$GLOBALS['db']['tables']['LIKES']['name']." WHERE ".$GLOBALS['db']['tables']['LIKES']['fields']['ARTICLE']."=:id_article";
-        $stmt = $connexion->prepare($sql);
-        $stmt->bindParam(':id_article', $id_article);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) { 
-        die('Erreur PDO : ' . $e->getMessage());
-    } catch (Exception $e) {
-        die('Erreur Générale : ' . $e->getMessage());
-    }
-    $nb_likes = $result["nb_likes"];
-    return $nb_likes;
-}
-
-function selectTotalLikes() {
-    try {
-        $connexion = getConnection();
-
-        $sql = "SELECT COUNT(*) AS total_likes FROM ".$GLOBALS['db']['tables']['LIKES']['name'];
-        $stmt = $connexion->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) { 
-        die('Erreur PDO : ' . $e->getMessage());
-    } catch (Exception $e) {
-        die('Erreur Générale : ' . $e->getMessage());
-    }
-    $total_likes = $result["total_likes"];
-    return $total_likes;
 }

@@ -15,6 +15,30 @@
     }
 
     /*
+    ---------- GESTION DU FORMULAIRE/BOUTON DE LIKE ------------------------------------------------------------
+    */
+
+    if(isset($_POST['likeButton']) && !empty($_POST['likeButton'])) {
+        switch($_POST['likeButton']) {
+            case 'like':
+                echo "like";
+                likeArticle($_GET['id']);
+                header('Location: ./article.php?id='.$_GET['id']); //Pour supprimer la variable $_POST['likeButton'] qui peut tout casser lors du raffraichissement
+                break;
+            case 'unlike':
+                echo "unlike";
+                unlikeArticle($_GET['id']);
+                header('Location: ./article.php?id='.$_GET['id']);
+                break;
+            case 'connectAndLike':
+                echo "c";
+                header('Location: ./auth.php?from=article.php?id='.$_GET['id']);
+                break;
+        }
+    }
+
+
+    /*
     ---------- GESTION DU FORMULAIRE DES COMMENTAIRES ------------------------------------------------------------
     */
 
@@ -66,6 +90,21 @@
     <main class="article-main">
         <div class="article-container">
             <div>
+                <form class="form-like" method="POST">
+                <?php
+                    if(isConnected()) {
+                        if(isLiked($_GET['id'])) {
+                            echo "<button type='submit' title='Retirer mon like' class='like-article-button' name='likeButton' value='unlike'><i class='bx bxs-like'></i></button>";
+                        } else {
+                            echo "<button type='submit' title='Ajouter mon like' class='like-article-button' name='likeButton' value='like'><i class='bx bx-like'></i></button>";
+                        }
+                    } else {
+                        echo "<button type='submit' title='Ajouter mon like' class='like-article-button' name='likeButton' value='connectAndLike'><i class='bx bx-like'></i></button>";
+                    }      
+                ?>
+                </form>
+                
+                
                 <h1><?php echo $article['title'] ; ?></h1>
                 <form class="form-del-article" action="../redirect/articleDeleted.php" method="POST">
                     <?php if (isConnected()) {
@@ -82,8 +121,10 @@
                     }
                 ?>
             </div>
-            <!--nl2br(htmlspecialchars()) => permet de prendre en compte les retours à la ligne 
-                tout en empechant l'execution de code HTML ou JS présent dans le texte -->
+            <!--
+                nl2br(htmlspecialchars()) => permet de prendre en compte les retours à la ligne, 
+                tout en empechant l'execution de code HTML ou JS présent dans le texte 
+            -->
             <p class="article-text"><?php echo nl2br(htmlspecialchars($article[$GLOBALS['db']['tables']['ARTICLES']['fields']['TEXT']]))?></p>
             <p class="article-creator"><?php echo $creator[$GLOBALS['db']['tables']['USERS']['fields']['PSEUDO']]; ?></p>
             <p class="article-date">

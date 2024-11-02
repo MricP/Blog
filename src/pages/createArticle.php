@@ -61,8 +61,9 @@
             }
             $_SESSION['lastActivity'] = time(); //Timer pour la le reset de la page quand on la reload
         }
-        $timeout_duration = 5;
 
+        $timeout_duration = 1;
+        // Expiration de la création d'article si la page est reload
         if (sizeof($_SESSION['categories']) != 0 && isset($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
             unset($_SESSION['categories']);
         }

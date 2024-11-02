@@ -287,6 +287,7 @@ header li:last-child a {
 }
 
 .article-container>div:first-of-type {
+    /* background-color: red; */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -297,6 +298,26 @@ header li:last-child a {
 .article-container>div:first-of-type h1{
     margin: 0;
     width: 80%;
+}
+
+.form-like {
+    display: flex;
+    align-items: center;
+    width: 50px;
+    margin-right: 5px;
+}
+
+.like-article-button {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    font-size: 1.8rem;
+    border: none;
+}
+
+.like-article-button:hover {
+    background-color: transparent;
+    color: var(--primary);
 }
 
 .form-del-article {
@@ -407,6 +428,32 @@ header li:last-child a {
 
 /* ################## PAGE LISTE ARTICLE / ACCUEIL ################## */
 
+
+.filter-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.filter-form>label:first-of-type {
+    width: 60%;
+}
+
+.filter-form>label:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10%;
+    margin-left: 5px;
+}
+
+.filter-form>label:nth-child(2) input {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+}
 
 .article-list-title {
     margin: 3rem 0 1rem 0;

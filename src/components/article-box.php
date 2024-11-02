@@ -10,7 +10,7 @@ $categories = selectCategories($articles[strval($i)][$GLOBALS['db']['tables']['A
             <p class="article-box-date">Posté le <?php echo formatDate($articles[strval($i)][$GLOBALS['db']['tables']['ARTICLES']['fields']['DATE']])?></p>
         </div>
         <p class="article-box-description"><?php echo substr(nl2br(htmlspecialchars($articles[strval($i)][$GLOBALS['db']['tables']['ARTICLES']['fields']['TEXT']])), 0, 400)."...";?></p>
-        <p class="article-box-interactions"><?php echo selectNumberOfLikes($articles[strval($i)][$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']])?> Likes - <?php echo selectNumberOfComments($articles[strval($i)][$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']])?> Commentaires</p>
+        <p class="article-box-interactions"><?php echo selectNumberOfLikes($articles[strval($i)][$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']])?> Like(s) - <?php echo selectNumberOfComments($articles[strval($i)][$GLOBALS['db']['tables']['ARTICLES']['fields']['ID']])?> Commentaire(s)</p>
         <div class="pastilles-container">
             <?php 
                 for ($i_category = 0; $i_category < sizeof($categories); $i_category++) {

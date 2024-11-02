@@ -28,7 +28,7 @@
     }
 
     $timeout_duration = 1;
-    // Expiration de la création de compte au bout de si la page est reload
+    // Expiration de la création de compte si la page est reload
     if (isset($_SESSION['lastActivity']) && !empty($_SESSION['lastActivity']) && (time() - $_SESSION['lastActivity']) > $timeout_duration) {
         unset($_SESSION['email']);
         unset($_SESSION['password']);
