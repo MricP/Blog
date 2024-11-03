@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : sam. 02 nov. 2024 à 21:21
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
+-- Hôte : 127.0.0.1:3306
+-- Généré le : dim. 03 nov. 2024 à 13:38
+-- Version du serveur : 8.3.0
+-- Version de PHP : 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,13 +27,16 @@ SET time_zone = "+00:00";
 -- Structure de la table `article`
 --
 
-CREATE TABLE `article` (
-  `id_article` int(4) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `text` varchar(4000) NOT NULL,
-  `id_author` int(4) NOT NULL,
-  `creation_date` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `article`;
+CREATE TABLE IF NOT EXISTS `article` (
+  `id_article` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `text` varchar(4000) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_author` int NOT NULL,
+  `creation_date` date NOT NULL,
+  PRIMARY KEY (`id_article`),
+  KEY `fk_article_author` (`id_author`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `article`
@@ -47,15 +50,31 @@ INSERT INTO `article` (`id_article`, `title`, `text`, `id_author`, `creation_dat
 (18, 'Pourquoi le Rugby est Devenu l\'un des Sports les Plus Populaires en France', 'Le rugby connaît une ascension fulgurante en France, s\'imposant comme l\'un des sports les plus prisés du pays. Cette popularité croissante peut être attribuée à plusieurs facteurs, allant des valeurs fondamentales du sport à des succès marquants sur la scène internationale.\r\n\r\nLes valeurs du rugby sont au cœur de son attrait. Ce sport promeut la camaraderie, le respect et l\'esprit d\'équipe, des éléments qui résonnent profondément avec les valeurs de la société française. Dans un monde où l\'individualisme prédomine, le rugby offre une bulle de solidarité et d\'entraide. Les matchs, qu\'ils soient amateurs ou professionnels, rassemblent les communautés, créant un fort sentiment d\'appartenance.\r\n\r\nL\'impact culturel du rugby est également significatif. Le sport s\'est enraciné dans la culture régionale, notamment dans le Sud-Ouest, où il est devenu un véritable mode de vie. Les clubs de rugby, souvent liés à des villes et villages, sont des institutions qui cultivent la passion et le soutien local. Les supporters, vêtus de leurs couleurs, remplissent les stades lors des grands matchs, renforçant ainsi le lien social.\r\n\r\nLes succès récents de l’équipe nationale ont aussi joué un rôle majeur dans la montée en popularité du rugby. Avec des performances impressionnantes dans des compétitions telles que le Tournoi des Six Nations et la Coupe du Monde, l\'équipe a su captiver l\'attention du public. Les victoires et les moments forts partagés par les joueurs sur le terrain ont suscité une fierté nationale, attirant de nouveaux fans et revitalisant l\'intérêt pour le sport.\r\n\r\nEn conclusion, le rugby est devenu un véritable symbole de la culture sportive française. Ses valeurs, son impact communautaire et ses succès sur le terrain en font un sport incontournable, attirant des millions de passionnés. Avec la Coupe du Monde 2023, la ferveur autour de ce sport ne devrait qu’augmenter, consolidant ainsi sa place dans le cœur des Français.', 4, '2024-01-27'),
 (19, 'Les Sports Nautiques : Un Guide pour Débuter', 'Les sports nautiques, tels que le surf, le kayak et la planche à voile, offrent une excellente manière de se connecter avec la nature tout en se maintenant actif. Pour ceux qui souhaitent débuter, voici un guide pratique pour naviguer dans cet univers passionnant.\r\n\r\n1. Choisir le bon sport : Chaque sport nautique présente ses propres défis et plaisirs. Le surf, par exemple, demande une certaine maîtrise des vagues et du timing, tandis que le kayak offre une expérience plus tranquille sur l\'eau. La planche à voile, quant à elle, combine les éléments du surf et de la navigation. Évaluez vos préférences pour déterminer le sport qui vous conviendrait le mieux.\r\n\r\n2. Équipements nécessaires : Quel que soit le sport choisi, investir dans le bon équipement est essentiel. Pour le surf, une planche adaptée à votre niveau et une combinaison sont indispensables. Pour le kayak, un kayak stable et un gilet de sauvetage sont essentiels. La planche à voile nécessite également du matériel spécifique, notamment une planche, une voile et des accessoires de sécurité. N\'hésitez pas à demander conseil dans des magasins spécialisés ou à des instructeurs.\r\n\r\n3. Les meilleurs spots : Pratiquer dans un environnement sûr est crucial pour débuter. Les plages avec des vagues modérées sont idéales pour le surf, tandis que les lacs ou rivières calmes conviennent parfaitement au kayak. Pour la planche à voile, recherchez des zones avec des vents constants. Renseignez-vous sur les écoles locales qui proposent des cours pour apprendre les bases en toute sécurité.\r\n\r\n4. Conseils de sécurité : Avant de vous lancer, il est vital de connaître les règles de sécurité. Toujours porter un gilet de sauvetage, se renseigner sur les conditions météorologiques et éviter de pratiquer seul sont des précautions à prendre. De plus, respecter l\'environnement marin et les autres pratiquants est essentiel pour garantir une expérience agréable pour tous.\r\n\r\nEn résumé, les sports nautiques sont une excellente manière de profiter des bienfaits de l\'eau tout en s\'amusant. Avec les bons conseils, équipements et spots, vous serez sur la bonne voie pour vivre des moments inoubliables sur l\'eau. Que vous choisissiez le surf, le kayak ou la planche à voile, lancez-vous et découvrez la liberté que ces sports peuvent offrir !', 5, '2022-07-06');
 
+--
+-- Déclencheurs `article`
+--
+DROP TRIGGER IF EXISTS `set_creation_date`;
+DELIMITER $$
+CREATE TRIGGER `set_creation_date` BEFORE INSERT ON `article` FOR EACH ROW BEGIN
+  IF NEW.creation_date IS NULL THEN
+    SET NEW.creation_date = CURRENT_DATE;
+  END IF;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
 -- Structure de la table `article_categories`
 --
 
-CREATE TABLE `article_categories` (
-  `id_article` int(4) NOT NULL,
-  `id_category` int(4) NOT NULL
+DROP TABLE IF EXISTS `article_categories`;
+CREATE TABLE IF NOT EXISTS `article_categories` (
+  `id_article` int NOT NULL,
+  `id_category` int NOT NULL,
+  PRIMARY KEY (`id_article`,`id_category`),
+  KEY `fk_article_categories_category` (`id_category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -63,17 +82,17 @@ CREATE TABLE `article_categories` (
 --
 
 INSERT INTO `article_categories` (`id_article`, `id_category`) VALUES
+(17, 43),
+(19, 49),
+(18, 50),
 (14, 51),
+(15, 51),
+(17, 51),
 (14, 55),
 (14, 56),
-(15, 51),
 (15, 56),
-(16, 57),
-(17, 43),
-(17, 51),
 (17, 56),
-(18, 50),
-(19, 49);
+(16, 57);
 
 -- --------------------------------------------------------
 
@@ -81,9 +100,12 @@ INSERT INTO `article_categories` (`id_article`, `id_category`) VALUES
 -- Structure de la table `article_likes`
 --
 
-CREATE TABLE `article_likes` (
-  `id_article` int(4) NOT NULL,
-  `id_user` int(4) NOT NULL
+DROP TABLE IF EXISTS `article_likes`;
+CREATE TABLE IF NOT EXISTS `article_likes` (
+  `id_article` int NOT NULL,
+  `id_user` int NOT NULL,
+  PRIMARY KEY (`id_article`,`id_user`),
+  KEY `fk_article_likes_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -99,10 +121,13 @@ INSERT INTO `article_likes` (`id_article`, `id_user`) VALUES
 -- Structure de la table `category`
 --
 
-CREATE TABLE `category` (
-  `id_category` int(4) NOT NULL,
-  `name_category` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
+  `id_category` int NOT NULL AUTO_INCREMENT,
+  `name_category` varchar(25) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id_category`),
+  UNIQUE KEY `name_category` (`name_category`)
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `category`
@@ -135,12 +160,16 @@ INSERT INTO `category` (`id_category`, `name_category`) VALUES
 -- Structure de la table `comment`
 --
 
-CREATE TABLE `comment` (
-  `id_comment` int(4) NOT NULL,
-  `id_author` int(4) NOT NULL,
-  `id_article` int(4) NOT NULL,
-  `text` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id_comment` int NOT NULL AUTO_INCREMENT,
+  `id_author` int NOT NULL,
+  `id_article` int NOT NULL,
+  `text` varchar(1000) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id_comment`),
+  KEY `fk_comment_user` (`id_author`),
+  KEY `fk_comment_article` (`id_article`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `comment`
@@ -156,13 +185,17 @@ INSERT INTO `comment` (`id_comment`, `id_author`, `id_article`, `text`) VALUES
 -- Structure de la table `user`
 --
 
-CREATE TABLE `user` (
-  `id_user` int(4) NOT NULL,
-  `pseudo` varchar(30) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(65) NOT NULL,
-  `userType` enum('simpleUser','admin') NOT NULL DEFAULT 'simpleUser'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `id_user` int NOT NULL AUTO_INCREMENT,
+  `pseudo` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(65) COLLATE utf8mb4_general_ci NOT NULL,
+  `userType` enum('simpleUser','admin') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'simpleUser',
+  PRIMARY KEY (`id_user`),
+  UNIQUE KEY `pseudo` (`pseudo`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `user`
@@ -175,82 +208,6 @@ INSERT INTO `user` (`id_user`, `pseudo`, `email`, `password`, `userType`) VALUES
 (4, 'user3', 'user3@localhost.fr', 'f3029a66c61b61b41b428963a2fc134154a5383096c776f3b4064733c5463d90', 'simpleUser'),
 (5, 'user4', 'user4@localhost.fr', 'f3029a66c61b61b41b428963a2fc134154a5383096c776f3b4064733c5463d90', 'simpleUser'),
 (6, 'user5', 'user5@localhost.fr', 'f3029a66c61b61b41b428963a2fc134154a5383096c776f3b4064733c5463d90', 'simpleUser');
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `article`
---
-ALTER TABLE `article`
-  ADD PRIMARY KEY (`id_article`),
-  ADD KEY `fk_article_author` (`id_author`);
-
---
--- Index pour la table `article_categories`
---
-ALTER TABLE `article_categories`
-  ADD PRIMARY KEY (`id_article`,`id_category`),
-  ADD KEY `fk_article_categories_category` (`id_category`);
-
---
--- Index pour la table `article_likes`
---
-ALTER TABLE `article_likes`
-  ADD PRIMARY KEY (`id_article`,`id_user`),
-  ADD KEY `fk_article_likes_user` (`id_user`);
-
---
--- Index pour la table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id_category`),
-  ADD UNIQUE KEY `name_category` (`name_category`);
-
---
--- Index pour la table `comment`
---
-ALTER TABLE `comment`
-  ADD PRIMARY KEY (`id_comment`),
-  ADD KEY `fk_comment_user` (`id_author`),
-  ADD KEY `fk_comment_article` (`id_article`);
-
---
--- Index pour la table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `pseudo` (`pseudo`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `article`
---
-ALTER TABLE `article`
-  MODIFY `id_article` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
---
--- AUTO_INCREMENT pour la table `category`
---
-ALTER TABLE `category`
-  MODIFY `id_category` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
-
---
--- AUTO_INCREMENT pour la table `comment`
---
-ALTER TABLE `comment`
-  MODIFY `id_comment` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
-
---
--- AUTO_INCREMENT pour la table `user`
---
-ALTER TABLE `user`
-  MODIFY `id_user` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- Contraintes pour les tables déchargées
